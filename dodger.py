@@ -1,4 +1,4 @@
-import pygame, random, sys
+import pygame, random, sys # ftg
 from pygame.locals import *
 
 WINDOWWIDTH = 600
