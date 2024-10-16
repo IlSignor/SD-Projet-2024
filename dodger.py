@@ -195,4 +195,3 @@ while True:
     waitForPlayerToPressKey()
 
     gameOverSound.stop()
-    
