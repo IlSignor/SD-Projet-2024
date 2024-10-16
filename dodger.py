@@ -12,7 +12,7 @@ BADDIEMINSPEED = 1
 BADDIEMAXSPEED = 8
 ADDNEWBADDIERATE = 6
 PLAYERMOVERATE = 5
-
+#wsh mon reuf
 def terminate():
     pygame.quit()
     sys.exit()
