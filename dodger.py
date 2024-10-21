@@ -6,7 +6,6 @@ WINDOWHEIGHT = 800
 
 TEXTCOLOR = (0, 0, 0)
 BUTTONTEXTCOLOR = (255, 255, 255)
-BACKGROUNDCOLOR = (255, 255, 255)
 
 FPS = 60
 
@@ -183,7 +182,9 @@ def showCharacterSelectionMenu():
     numCharacters = len(characterImages)
 
     while True:
-        windowSurface.fill(BACKGROUNDCOLOR)
+        # Chargement de l'image de fond
+        backgroundImage = pygame.image.load('background.jpg').convert()
+        windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'arrière-plan
 
         # Obtenir la position de la souris
         mouseX, mouseY = pygame.mouse.get_pos()
@@ -191,17 +192,15 @@ def showCharacterSelectionMenu():
         # Afficher les personnages
         for i in range(numCharacters):
             # Vérifier si la souris est au-dessus du personnage
-            isMouseOver = (mouseX in range(100 + i * 150, 100 + i * 150 + 130) and
-                           mouseY in range(200, 200 + 130))
+            isMouseOver = (
+                100 + i * 150 <= mouseX <= 100 + i * 150 + 130 and
+                200 <= mouseY <= 200 + 130
+            )
 
-            # Déterminer la couleur de la bordure
+            # Dessiner la bordure uniquement si survolé
             if isMouseOver:
                 borderColor = (255, 255, 0)  # Jaune si survolé
-            else:
-                borderColor = (255, 255, 255)  # Blanc sinon
-
-            # Dessiner la bordure
-            pygame.draw.rect(windowSurface, borderColor, (100 + i * 150, 200, 130, 130), 5)
+                pygame.draw.rect(windowSurface, borderColor, (100 + i * 150, 200, 130, 130), 5)
 
             # Afficher l'image du personnage
             windowSurface.blit(characterImages[i], (100 + i * 150, 200))
@@ -209,16 +208,20 @@ def showCharacterSelectionMenu():
         # Afficher les instructions
         drawText('Click on a character to select', font, windowSurface, 100, 400)
 
+        # Mettre à jour l'affichage
         pygame.display.update()
 
+        # Gérer les événements
         for event in pygame.event.get():
             if event.type == QUIT:
                 terminate()
             if event.type == MOUSEBUTTONDOWN:
-                # Si la souris est au-dessus d'un personnage et que l'on clique
+                # Vérifier si un personnage a été cliqué
                 for i in range(numCharacters):
-                    if (mouseX in range(100 + i * 150, 100 + i * 150 + 130) and
-                        mouseY in range(200, 200 + 130)):
+                    if (
+                        100 + i * 150 <= mouseX <= 100 + i * 150 + 130 and
+                        200 <= mouseY <= 200 + 130
+                    ):
                         return i  # Retourner l'index du personnage sélectionné
 
 
@@ -259,7 +262,7 @@ characterImages = [
 baddieImage = pygame.image.load('baddie.png')
 healthItemImage = pygame.image.load('cherry.png')
 
-backgroundImage = pygame.image.load('background.jpg').convert()  # Assurez-vous que le fichier 'background.png' existe dans le même dossier
+backgroundImage = pygame.image.load('background.jpg').convert()
 
 
 # Show the "Start" screen.
