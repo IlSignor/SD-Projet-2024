@@ -1,18 +1,22 @@
 import pygame, random, sys
 from pygame.locals import *
-#message ters
-WINDOWWIDTH = 600
-WINDOWHEIGHT = 600 #salut ma biche
+#message
+WINDOWWIDTH = 1000
+WINDOWHEIGHT = 800
+
 TEXTCOLOR = (0, 0, 0)
+BUTTONTEXTCOLOR = (255, 255, 255)
 BACKGROUNDCOLOR = (255, 255, 255)
+
 FPS = 60
+
 BADDIEMINSIZE = 10
 BADDIEMAXSIZE = 40
 BADDIEMINSPEED = 1
 BADDIEMAXSPEED = 8
 ADDNEWBADDIERATE = 6
 PLAYERMOVERATE = 5
-
+ 
 def terminate():
     pygame.quit()
     sys.exit()
@@ -30,8 +34,9 @@ def waitForPlayerToPressKey():
 def playerHasHitBaddie(playerRect, baddies):
     for b in baddies:
         if playerRect.colliderect(b['rect']):
-            return True
-    return False
+            return b  # Retourne le baddie en collision
+    return None  # Aucune collision trouvée
+
 
 def drawText(text, font, surface, x, y):
     textobj = font.render(text, 1, TEXTCOLOR)
@@ -39,75 +44,253 @@ def drawText(text, font, surface, x, y):
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
 
+def shoot(playerRect):
+    # create a new shot in the center of the player
+    bullet = pygame.Rect(playerRect.centerx - 2, playerRect.top - 10, 5, 10)  # Tir étroit
+    bullets.append(bullet)
+
+def move_bullets():
+    for bullet in bullets[:]:
+        bullet.y -= 10  # Goes up by 10 pixels per frame
+        if bullet.bottom < 0:
+            bullets.remove(bullet)  # Remove of bullet is out of the screen
+            
+def check_bullet_hits(baddies):
+    for bullet in bullets[:]:
+        for baddie in baddies[:]:
+            if bullet.colliderect(baddie['rect']) and baddie['rect'].width <= 30:  # only the baddies of 30 pixels or more
+                bullets.remove(bullet)
+                baddies.remove(baddie)
+                break  # delete errors dues to multiple delete of the same baddie
+            elif bullet.colliderect(baddie['rect']) and baddie['rect'].width >30 :  # for the baddies of more than 30 pixels
+                bullets.remove(bullet)
+                break  # delete errors dues to multiple delete of the same baddie
+    
+def draw_lives(surface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver):
+    for i in range(3):
+        if isGameOver==True:
+            surface.blit(smallPlayerImageGray, (500 + i * 45, 10))
+        else:
+            if i < lives:
+                surface.blit(smallPlayerImage, (500 + i * 45, 10))
+            else:
+                surface.blit(smallPlayerImageGray, (500 + i * 45, 10))
+
+def clear_lives_area(surface):
+    lives_area = pygame.Rect(500, 10, 3 * 45, 30)
+    pygame.draw.rect(surface, BACKGROUNDCOLOR, lives_area)
+
+#choose the difficulty:
+def drawButton(buttonRect, text, color, hoverColor):
+    mousePos = pygame.mouse.get_pos()
+    if buttonRect.collidepoint(mousePos):
+        pygame.draw.rect(windowSurface, hoverColor, buttonRect)
+    else:
+        pygame.draw.rect(windowSurface, color, buttonRect)
+
+    # Add text on the button
+    buttonFont = pygame.font.SysFont(None, 40)
+    textSurf = buttonFont.render(text, True, BUTTONTEXTCOLOR)
+    textRect = textSurf.get_rect(center=buttonRect.center)
+    windowSurface.blit(textSurf, textRect)
+
+def showDifficultyMenu():
+    # Couleurs des boutons
+    BUTTONCOLOR = (100, 200, 255)
+    BUTTONHOVERCOLOR = (150, 220, 255)
+
+    # Définition des boutons avec leurs coordonnées
+    easyButton = pygame.Rect(300, 200, 200, 50)
+    mediumButton = pygame.Rect(300, 300, 200, 50)
+    hardButton = pygame.Rect(300, 400, 200, 50)
+
+    while True:
+
+        # Gère les événements utilisateur
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()
+
+            if event.type == MOUSEBUTTONDOWN:
+                if easyButton.collidepoint(event.pos):
+                    return 'easy'
+                elif mediumButton.collidepoint(event.pos):
+                    return 'medium'
+                elif hardButton.collidepoint(event.pos):
+                    return 'hard'
+
+        # Dessine les boutons
+        drawButton(easyButton, 'Facile', BUTTONCOLOR, BUTTONHOVERCOLOR)
+        drawButton(mediumButton, 'Moyen', BUTTONCOLOR, BUTTONHOVERCOLOR)
+        drawButton(hardButton, 'Difficile', BUTTONCOLOR, BUTTONHOVERCOLOR)
+
+        pygame.display.update()
+        mainClock.tick(FPS)
+
+def move_health_items():
+    for item in healthItems[:]:
+        item['rect'].y += item['speed']
+        if item['rect'].top > WINDOWHEIGHT:
+            healthItems.remove(item)
+
+def check_health_item_collision(playerRect):
+    global lives
+    for item in healthItems[:]:
+        if playerRect.colliderect(item['rect']):
+            if lives < 3:
+                lives += 1
+            healthItems.remove(item)
+
+def showCharacterSelectionMenu():
+    selectedCharacterIndex = 0
+    numCharacters = len(characterImages)
+
+    while True:
+        windowSurface.fill(BACKGROUNDCOLOR)
+
+        # Obtenir la position de la souris
+        mouseX, mouseY = pygame.mouse.get_pos()
+
+        # Afficher les personnages
+        for i in range(numCharacters):
+            # Vérifier si la souris est au-dessus du personnage
+            isMouseOver = (mouseX in range(100 + i * 150, 100 + i * 150 + 130) and
+                           mouseY in range(200, 200 + 130))
+
+            # Déterminer la couleur de la bordure
+            if isMouseOver:
+                borderColor = (255, 255, 0)  # Jaune si survolé
+            else:
+                borderColor = (255, 255, 255)  # Blanc sinon
+
+            # Dessiner la bordure
+            pygame.draw.rect(windowSurface, borderColor, (100 + i * 150, 200, 130, 130), 5)
+
+            # Afficher l'image du personnage
+            windowSurface.blit(characterImages[i], (100 + i * 150, 200))
+
+        # Afficher les instructions
+        drawText('Click on a character to select', font, windowSurface, 100, 400)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()
+            if event.type == MOUSEBUTTONDOWN:
+                # Si la souris est au-dessus d'un personnage et que l'on clique
+                for i in range(numCharacters):
+                    if (mouseX in range(100 + i * 150, 100 + i * 150 + 130) and
+                        mouseY in range(200, 200 + 130)):
+                        return i  # Retourner l'index du personnage sélectionné
+
+
+
 # Set up pygame, the window, and the mouse cursor.
 pygame.init()
 mainClock = pygame.time.Clock()
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 pygame.display.set_caption('Dodger')
-pygame.mouse.set_visible(False)
 
 # Set up the fonts.
 font = pygame.font.SysFont(None, 48)
+
+#set up bullets
+bullets = [] #list to store player's shots
+
+# Set up health items
+healthItems = []  # Initialize health items list
 
 # Set up sounds.
 gameOverSound = pygame.mixer.Sound('gameover.wav')
 pygame.mixer.music.load('background.mid')
 
 # Set up images.
-playerImage = pygame.image.load('player.png')
-playerRect = playerImage.get_rect()
+characterImages = [
+    pygame.image.load('player1.png'),
+    pygame.image.load('player2.png'),
+    pygame.image.load('player3.png'),
+    pygame.image.load('player4.png'),
+    pygame.image.load('player5.png'),
+    pygame.image.load('player6.png')
+]
+
+
 baddieImage = pygame.image.load('baddie.png')
+healthItemImage = pygame.image.load('cherry.png')
+
+
 
 # Show the "Start" screen.
 windowSurface.fill(BACKGROUNDCOLOR)
-drawText('Dodger', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
-drawText('Press a key to start.', font, windowSurface, (WINDOWWIDTH / 3) - 30, (WINDOWHEIGHT / 3) + 50)
+
 pygame.display.update()
-waitForPlayerToPressKey()
+
 
 topScore = 0
+drawText('Dodger', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
+drawText('Press a key to start.', font, windowSurface, (WINDOWWIDTH / 3) - 30, (WINDOWHEIGHT / 3) + 50)
+
+# Show character selection menu
+selectedCharacterIndex = showCharacterSelectionMenu()
+playerImage = characterImages[selectedCharacterIndex]  # Set player image based on selection
+playerRect = playerImage.get_rect()  # Get the rectangle for the player
+
+smallPlayerImage = pygame.transform.scale(playerImage, (30, 30)) 
+smallPlayerImageGray = pygame.Surface((30, 30))
+smallPlayerImageGray.blit(smallPlayerImage, (0, 0))
+smallPlayerImageGray.set_alpha(100)
+
+windowSurface.fill(BACKGROUNDCOLOR)
+
+difficulty = showDifficultyMenu()
+if difficulty == 'easy':
+    BADDIEMINSPEED = 1
+    BADDIEMAXSPEED = 4
+    ADDNEWBADDIERATE = 12
+elif difficulty == 'medium':
+    BADDIEMINSPEED = 2
+    BADDIEMAXSPEED = 6
+    ADDNEWBADDIERATE = 8
+elif difficulty == 'hard':
+    BADDIEMINSPEED = 4
+    BADDIEMAXSPEED = 8
+    ADDNEWBADDIERATE = 6
+
+windowSurface.fill(BACKGROUNDCOLOR)
+
 while True:
     # Set up the start of the game.
     baddies = []
     score = 0
+    lives = 3
+
+    
     playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 50)
     moveLeft = moveRight = moveUp = moveDown = False
-    reverseCheat = slowCheat = False
     baddieAddCounter = 0
     pygame.mixer.music.play(-1, 0.0)
 
     while True: # The game loop runs while the game part is playing.
         score += 1 # Increase score.
-
+        
         for event in pygame.event.get():
+
             if event.type == QUIT:
                 terminate()
 
             if event.type == KEYDOWN:
-                if event.key == K_z:
-                    reverseCheat = True
-                if event.key == K_x:
-                    slowCheat = True
                 if event.key == K_LEFT or event.key == K_a:
                     moveRight = False
                     moveLeft = True
                 if event.key == K_RIGHT or event.key == K_d:
                     moveLeft = False
                     moveRight = True
-                if event.key == K_UP or event.key == K_w:
-                    moveDown = False
-                    moveUp = True
-                if event.key == K_DOWN or event.key == K_s:
-                    moveUp = False
-                    moveDown = True
+                if event.key == K_SPACE:
+                    shoot(playerRect) #shoot if the player click space                  
+
 
             if event.type == KEYUP:
-                if event.key == K_z:
-                    reverseCheat = False
-                    score = 0
-                if event.key == K_x:
-                    slowCheat = False
-                    score = 0
                 if event.key == K_ESCAPE:
                         terminate()
 
@@ -115,27 +298,22 @@ while True:
                     moveLeft = False
                 if event.key == K_RIGHT or event.key == K_d:
                     moveRight = False
-                if event.key == K_UP or event.key == K_w:
-                    moveUp = False
-                if event.key == K_DOWN or event.key == K_s:
-                    moveDown = False
 
-            if event.type == MOUSEMOTION:
-                # If the mouse moves, move the player where to the cursor.
-                playerRect.centerx = event.pos[0]
-                playerRect.centery = event.pos[1]
         # Add new baddies at the top of the screen, if needed.
-        if not reverseCheat and not slowCheat:
-            baddieAddCounter += 1
+        baddieAddCounter += 1
         if baddieAddCounter == ADDNEWBADDIERATE:
             baddieAddCounter = 0
             baddieSize = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)
-            newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize), 0 - baddieSize, baddieSize, baddieSize),
+            newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize),  random.randint(50, 150) - baddieSize, baddieSize, baddieSize),
                         'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
                         'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
                         }
 
             baddies.append(newBaddie)
+        
+        if random.randint(1, 1000) <= 1:  # 5% de chance de spawn
+            itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 0, 30, 30)
+            healthItems.append({'rect': itemRect, 'speed': random.randint(2, 5)})
 
         # Move the player around.
         if moveLeft and playerRect.left > 0:
@@ -149,12 +327,15 @@ while True:
 
         # Move the baddies down.
         for b in baddies:
-            if not reverseCheat and not slowCheat:
-                b['rect'].move_ip(0, b['speed'])
-            elif reverseCheat:
-                b['rect'].move_ip(0, -5)
-            elif slowCheat:
-                b['rect'].move_ip(0, 1)
+            b['rect'].move_ip(0, b['speed'])
+            
+        # Déplacer les items de soin vers le bas
+        move_health_items()
+
+        # Afficher chaque item de soin
+        for item in healthItems:
+            windowSurface.blit(healthItemImage, item['rect'])
+
 
         # Delete baddies that have fallen past the bottom.
         for b in baddies[:]:
@@ -165,33 +346,65 @@ while True:
         windowSurface.fill(BACKGROUNDCOLOR)
 
         # Draw the score and top score.
-        drawText('Score: %s' % (score), font, windowSurface, 10, 0)
-        drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 40)
-
+        drawText('Score: %s' % (score), font, windowSurface, 800, 0)
+        drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 0)
+        draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)
         # Draw the player's rectangle.
         windowSurface.blit(playerImage, playerRect)
 
         # Draw each baddie.
         for b in baddies:
             windowSurface.blit(b['surface'], b['rect'])
+        
+            
+        move_bullets()  # Displace the shots
+        check_bullet_hits(baddies)
+        
+        move_health_items()
+        check_health_item_collision(playerRect)
+
+        for item in healthItems:
+            windowSurface.blit(healthItemImage, item['rect'])
+
+        # Draw the shots
+        for bullet in bullets:
+            pygame.draw.rect(windowSurface, (255, 0, 0), bullet)  # Red shots
+        
 
         pygame.display.update()
 
-        # Check if any of the baddies have hit the player.
-        if playerHasHitBaddie(playerRect, baddies):
-            if score > topScore:
-                topScore = score # set new top score
-            break
+
+        hitBaddie = playerHasHitBaddie(playerRect, baddies)  # Vérifie la collision
+
+        if playerRect.topleft == (-10000, -10000):
+            break  # Termine la boucle de jeu
+        
+        if hitBaddie:  # Si une collision a eu lieu
+            lives -= 1
+            baddies.remove(hitBaddie)  # Supprime uniquement le baddie en collision
+            if lives <= 0:
+                playerRect.topleft = (-10000, -10000)
+                if score > topScore:
+                    topScore = score  # Met à jour le meilleur score
 
         mainClock.tick(FPS)
 
     # Stop the game and show the "Game Over" screen.
     pygame.mixer.music.stop()
     gameOverSound.play()
+    clear_lives_area(windowSurface)
 
+    draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=True)
     drawText('GAME OVER', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
     drawText('Press a key to play again.', font, windowSurface, (WINDOWWIDTH / 3) - 80, (WINDOWHEIGHT / 3) + 50)
+
     pygame.display.update()
-    waitForPlayerToPressKey()
 
     gameOverSound.stop()
+    waitingForKeyPress = True
+    while waitingForKeyPress:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()
+            if event.type == KEYDOWN:
+                waitingForKeyPress = False 
