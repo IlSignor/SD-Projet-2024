@@ -112,9 +112,10 @@ def draw_lives(surface, lives, smallPlayerImage, smallPlayerImageGray, isGameOve
             else:
                 surface.blit(smallPlayerImageGray, (500 + i * 45, 10))
 
-def clear_lives_area(surface):
+def clear_lives_area(surface, backgroundImage):
     lives_area = pygame.Rect(500, 10, 3 * 45, 30)
-    pygame.draw.rect(surface, BACKGROUNDCOLOR, lives_area)
+    surface.blit(backgroundImage, (500, 10), lives_area)
+
 
 #choose the difficulty:
 def drawButton(buttonRect, text, color, hoverColor):
@@ -258,10 +259,11 @@ characterImages = [
 baddieImage = pygame.image.load('baddie.png')
 healthItemImage = pygame.image.load('cherry.png')
 
+backgroundImage = pygame.image.load('background.jpg').convert()  # Assurez-vous que le fichier 'background.png' existe dans le même dossier
 
 
 # Show the "Start" screen.
-windowSurface.fill(BACKGROUNDCOLOR)
+windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
 pygame.display.update()
 
@@ -280,7 +282,7 @@ smallPlayerImageGray = pygame.Surface((30, 30))
 smallPlayerImageGray.blit(smallPlayerImage, (0, 0))
 smallPlayerImageGray.set_alpha(100)
 
-windowSurface.fill(BACKGROUNDCOLOR)
+windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
 difficulty = showDifficultyMenu()
 if difficulty == 'easy':
@@ -296,7 +298,8 @@ elif difficulty == 'hard':
     BADDIEMAXSPEED = 8
     ADDNEWBADDIERATE = 6
 
-windowSurface.fill(BACKGROUNDCOLOR)
+windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
+
 
 while True:
     # Set up the start of the game.
@@ -385,7 +388,8 @@ while True:
 
 
         # Draw the game world on the window.
-        windowSurface.fill(BACKGROUNDCOLOR)
+        windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
+
 
         # Draw the score and top score.
         drawText('Score: %s' % (score), font, windowSurface, 800, 0)
@@ -426,7 +430,7 @@ while True:
 
         hitBaddie = playerHasHitBaddie(playerRect, baddies)  # Vérifie la collision
 
-        if playerRect.topleft == (-10000, -10000):
+        if playerRect.topleft < (0, 0):
             break  # Termine la boucle de jeu
         
         if hitBaddie:  # Si une collision a eu lieu
@@ -443,7 +447,8 @@ while True:
     # Stop the game and show the "Game Over" screen.
     pygame.mixer.music.stop()
     gameOverSound.play()
-    clear_lives_area(windowSurface)
+    clear_lives_area(windowSurface, backgroundImage)
+
 
     draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=True)
     drawText('GAME OVER', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
