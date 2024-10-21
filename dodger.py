@@ -459,11 +459,12 @@ while True:
 
     pygame.display.update()
 
-    gameOverSound.stop()
+    
     waitingForKeyPress = True
     while waitingForKeyPress:
         for event in pygame.event.get():
             if event.type == QUIT:
                 terminate()
             if event.type == KEYDOWN:
-                waitingForKeyPress = False 
+                waitingForKeyPress = False
+                gameOverSound.stop()
