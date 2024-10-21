@@ -16,7 +16,40 @@ BADDIEMINSPEED = 1
 BADDIEMAXSPEED = 8
 ADDNEWBADDIERATE = 6
 PLAYERMOVERATE = 5
- 
+
+# Classe pour gérer l'explosion
+class Explosion:
+    def __init__(self, position):
+        self.sprite_sheet = pygame.image.load('explosions.png').convert_alpha()  # Charge la sprite sheet
+        self.frames = self.extract_frames(self.sprite_sheet, frame_width=30, frame_height=120, num_frames=5)  # Changez les dimensions et le nombre de frames selon l'image
+        self.index = 0
+        self.rect = self.frames[self.index].get_rect(center=position)
+        self.finished = False
+
+    def extract_frames(self, sprite_sheet, frame_width, frame_height, num_frames):
+        frames = []
+        for i in range(num_frames):
+            # Découpe chaque image de la sprite sheet
+            frame = sprite_sheet.subsurface((i * frame_width, 0, frame_width, frame_height))
+            frames.append(frame)
+        return frames
+
+    def update(self):
+        self.index += 1
+        if self.index >= len(self.frames):
+            self.finished = True
+        else:
+            self.rect = self.frames[self.index].get_rect(center=self.rect.center)  # Mettre à jour la position de l'explosion
+
+    def draw(self, surface):
+        if not self.finished:
+            surface.blit(self.frames[self.index], self.rect)
+
+
+# Fonction pour gérer l'explosion
+def trigger_explosion(explosions, position):
+    explosions.append(Explosion(position))
+    
 def terminate():
     pygame.quit()
     sys.exit()
@@ -55,17 +88,20 @@ def move_bullets():
         if bullet.bottom < 0:
             bullets.remove(bullet)  # Remove of bullet is out of the screen
             
-def check_bullet_hits(baddies):
-    for bullet in bullets[:]:
-        for baddie in baddies[:]:
-            if bullet.colliderect(baddie['rect']) and baddie['rect'].width <= 30:  # only the baddies of 30 pixels or more
-                bullets.remove(bullet)
-                baddies.remove(baddie)
-                break  # delete errors dues to multiple delete of the same baddie
-            elif bullet.colliderect(baddie['rect']) and baddie['rect'].width >30 :  # for the baddies of more than 30 pixels
-                bullets.remove(bullet)
-                break  # delete errors dues to multiple delete of the same baddie
-    
+def check_bullet_hits(baddies, explosions):
+    for baddie in baddies[:]:
+        for bullet in bullets[:]:
+            if bullet.colliderect(baddie['rect']):
+                # Ajout d'une explosion quelle que soit la taille
+                trigger_explosion(explosions, baddie['rect'].center)  # Ajout de l'explosion
+                
+                if baddie['rect'].width <= 30 and baddie['rect'].height <= 30:
+                    baddies.remove(baddie)  # Supprimer le baddie si de taille acceptable
+                
+                bullets.remove(bullet)  # Supprimer la balle
+                break  # Sortir de la boucle des balles pour éviter de modifier la liste pendant l'itération
+                 
+   
 def draw_lives(surface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver):
     for i in range(3):
         if isGameOver==True:
@@ -200,6 +236,9 @@ bullets = [] #list to store player's shots
 
 # Set up health items
 healthItems = []  # Initialize health items list
+
+#set up explosions
+explosions = []
 
 # Set up sounds.
 gameOverSound = pygame.mixer.Sound('gameover.wav')
@@ -342,6 +381,9 @@ while True:
             if b['rect'].top > WINDOWHEIGHT:
                 baddies.remove(b)
 
+
+
+
         # Draw the game world on the window.
         windowSurface.fill(BACKGROUNDCOLOR)
 
@@ -358,8 +400,16 @@ while True:
         
             
         move_bullets()  # Displace the shots
-        check_bullet_hits(baddies)
+        check_bullet_hits(baddies, explosions)
         
+        for explosion in explosions[:]:
+            explosion.update()
+            if explosion.finished:
+                explosions.remove(explosion)
+
+        for explosion in explosions:
+            explosion.draw(windowSurface)
+            
         move_health_items()
         check_health_item_collision(playerRect)
 
@@ -381,6 +431,7 @@ while True:
         
         if hitBaddie:  # Si une collision a eu lieu
             lives -= 1
+            trigger_explosion(explosions, hitBaddie['rect'].center)
             baddies.remove(hitBaddie)  # Supprime uniquement le baddie en collision
             if lives <= 0:
                 playerRect.topleft = (-10000, -10000)
