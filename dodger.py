@@ -82,18 +82,21 @@ def move_bullets():
         if bullet.bottom < 0:
             bullets.remove(bullet)  # Remove of bullet is out of the screen
             
-def check_bullet_hits(baddies, explosions):
+def check_bullet_hits(baddies, explosions, score):
     for baddie in baddies[:]:
         for bullet in bullets[:]:
             if bullet.colliderect(baddie['rect']):
-                # Ajout d'une explosion quelle que soit la taille
-                trigger_explosion(explosions, baddie['rect'].center)  # Ajout de l'explosion
-                
+                # Ajout d'une explosion
+                trigger_explosion(explosions, baddie['rect'].center)  
+
                 if baddie['rect'].width <= 30 and baddie['rect'].height <= 30:
                     baddies.remove(baddie)  # Supprimer le baddie si de taille acceptable
+                    score += 250  # Ajouter 100 points si le baddie est détruit
                 
                 bullets.remove(bullet)  # Supprimer la balle
-                break  # Sortir de la boucle des balles pour éviter de modifier la liste pendant l'itération
+                break  # Sortir de la boucle des balles pour éviter la modification de la liste pendant l'itération
+    return score  # Retourner le score mis à jour
+
                  
    
 def draw_lives(surface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver):
@@ -455,7 +458,8 @@ while True:
         
             
         move_bullets()  # Displace the shots
-        check_bullet_hits(baddies, explosions)
+        score = check_bullet_hits(baddies, explosions, score)
+
         
         for explosion in explosions[:]:
             explosion.update()
