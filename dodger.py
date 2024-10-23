@@ -56,8 +56,6 @@ def waitForPlayerToPressKey():
             if event.type == QUIT:
                 terminate()
             if event.type == KEYDOWN:
-                if event.key == K_ESCAPE: # Pressing ESC quits.
-                    terminate()
                 return
 
 def playerHasHitBaddie(playerRect, baddies):
@@ -131,11 +129,14 @@ def showDifficultyMenu():
     # Couleurs des boutons
     BUTTONCOLOR = (100, 200, 255)
     BUTTONHOVERCOLOR = (150, 220, 255)
-
+    QUITBUTTONCOLOR = (255, 100, 100)
+    QUITBUTTONHOVERCOLOR = (255, 150, 150)
+    
     # Définition des boutons avec leurs coordonnées
     easyButton = pygame.Rect(300, 200, 200, 50)
     mediumButton = pygame.Rect(300, 300, 200, 50)
     hardButton = pygame.Rect(300, 400, 200, 50)
+    quitButton = pygame.Rect(300, 500, 200, 50)
 
     while True:
 
@@ -151,12 +152,15 @@ def showDifficultyMenu():
                     return 'medium'
                 elif hardButton.collidepoint(event.pos):
                     return 'hard'
-
+                elif quitButton.collidepoint(event.pos):  # Si le bouton "Quitter" est cliqué
+                    terminate()
+                    
         # Dessine les boutons
         drawButton(easyButton, 'Facile', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(mediumButton, 'Moyen', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(hardButton, 'Difficile', BUTTONCOLOR, BUTTONHOVERCOLOR)
-
+        drawButton(quitButton, 'Quitter', QUITBUTTONCOLOR, QUITBUTTONHOVERCOLOR)
+        
         pygame.display.update()
         mainClock.tick(FPS)
 
@@ -177,6 +181,9 @@ def check_health_item_collision(playerRect):
 def showCharacterSelectionMenu():
     selectedCharacterIndex = 0
     numCharacters = len(characterImages)
+
+    # Définir le bouton Quitter
+    quitButtonRect = pygame.Rect(400, 500, 200, 50)  # Position du bouton Quitter
 
     while True:
         # Chargement de l'image de fond
@@ -205,6 +212,9 @@ def showCharacterSelectionMenu():
         # Afficher les instructions
         drawText('Click on a character to select', font, windowSurface, 100, 400)
 
+        # Dessiner le bouton Quitter
+        drawButton(quitButtonRect, 'Quitter', (255, 100, 100), (255, 150, 150))
+
         # Mettre à jour l'affichage
         pygame.display.update()
 
@@ -221,6 +231,49 @@ def showCharacterSelectionMenu():
                     ):
                         return i  # Retourner l'index du personnage sélectionné
 
+                # Vérifier si le bouton "Quitter" a été cliqué
+                if quitButtonRect.collidepoint(mouseX, mouseY):
+                    terminate()  # Fermer le jeu si le bouton Quitter est cliqué
+
+
+def pause_menu():
+    # Définir le bouton Quitter
+    quitButtonRect = pygame.Rect((WINDOWWIDTH / 2) - 100, (WINDOWHEIGHT / 2) + 50, 200, 50)  # Position du bouton Quitter
+
+    waitingForUnpause = True
+    while waitingForUnpause:
+        # Créer une surface semi-transparente pour le fond
+        transparent_surface = pygame.Surface((WINDOWWIDTH, WINDOWHEIGHT))
+        transparent_surface.set_alpha(10)  # Opacité de 0 (transparent) à 255 (opaque)
+        transparent_surface.fill((220, 220, 220))  # Couleur grise (vous pouvez changer la couleur)
+
+        # Afficher l'image de fond semi-transparente
+        windowSurface.blit(transparent_surface, (0, 0))
+
+        # Afficher les textes "Paused" et "Press ESC to resume"
+        drawText('Paused', font, windowSurface, (WINDOWWIDTH / 2) - 100, (WINDOWHEIGHT / 2) - 100)
+        drawText('Press ESC to resume.', font, windowSurface, (WINDOWWIDTH / 2) - 150, (WINDOWHEIGHT / 2))
+
+        # Dessiner le bouton "Quitter"
+        drawButton(quitButtonRect, 'Quitter', (255, 100, 100), (255, 150, 150))
+
+        # Mettre à jour l'affichage
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()  # Fermer le jeu
+            if event.type == KEYDOWN:
+                # Vérifier si la touche pressée est "ESC"
+                if event.key == pygame.K_ESCAPE:
+                    waitingForUnpause = False  # Reprendre le jeu si ESC est appuyé
+            if event.type == MOUSEBUTTONDOWN:
+                # Obtenir la position de la souris
+                mouseX, mouseY = pygame.mouse.get_pos()
+
+                # Vérifier si le bouton "Quitter" a été cliqué
+                if quitButtonRect.collidepoint(mouseX, mouseY):
+                    terminate()  # Fermer le jeu si le bouton Quitter est cliqué
 
 
 # Set up pygame, the window, and the mouse cursor.
@@ -330,12 +383,10 @@ while True:
                     moveRight = True
                 if event.key == K_SPACE:
                     shoot(playerRect) #shoot if the player click space                  
+                if event.key == K_ESCAPE:  # Check for "P" key to pause the game
+                    pause_menu()  # Call the pause menu function
 
-
-            if event.type == KEYUP:
-                if event.key == K_ESCAPE:
-                        terminate()
-
+            if event.type == KEYUP:                  
                 if event.key == K_LEFT or event.key == K_a:
                     moveLeft = False
                 if event.key == K_RIGHT or event.key == K_d:
