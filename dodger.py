@@ -91,7 +91,7 @@ def check_bullet_hits(baddies, explosions, score):
 
                 if baddie['rect'].width <= 30 and baddie['rect'].height <= 30:
                     baddies.remove(baddie)  # Supprimer le baddie si de taille acceptable
-                    score += 250  # Ajouter 100 points si le baddie est détruit
+                    score += 250  # Ajouter 250 points si le baddie est détruit
                 
                 bullets.remove(bullet)  # Supprimer la balle
                 break  # Sortir de la boucle des balles pour éviter la modification de la liste pendant l'itération
