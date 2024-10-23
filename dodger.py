@@ -1,6 +1,6 @@
 import pygame, random, sys
 from pygame.locals import *
-#message
+
 WINDOWWIDTH = 1000
 WINDOWHEIGHT = 800
 
@@ -11,9 +11,6 @@ FPS = 60
 
 BADDIEMINSIZE = 10
 BADDIEMAXSIZE = 40
-BADDIEMINSPEED = 1
-BADDIEMAXSPEED = 8
-ADDNEWBADDIERATE = 6
 PLAYERMOVERATE = 5
 
 # Classe pour gérer l'explosion
