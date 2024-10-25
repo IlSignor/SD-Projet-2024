@@ -3,22 +3,11 @@ from pygame.locals import *
 from definition import*
 from game import*
 
-WINDOWWIDTH = 1000
-WINDOWHEIGHT = 800
-
-TEXTCOLOR = (0, 0, 0)
-BUTTONTEXTCOLOR = (255, 255, 255)
-
-FPS = 60
-
-BADDIEMINSIZE = 10
-BADDIEMAXSIZE = 40
-PLAYERMOVERATE = 5
-
 # Set up pygame, the window, and the mouse cursor.
 pygame.init()
-mainClock = pygame.time.Clock()
+
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+
 pygame.display.set_caption('Dodger')
 
 # Set up the fonts.
@@ -71,7 +60,7 @@ smallPlayerImageGray.set_alpha(100)
 
 windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
-difficulty = showDifficultyMenu(windowSurface,mainClock,FPS)
+difficulty = showDifficultyMenu(windowSurface)
 if difficulty == 'easy':
     BADDIEMINSPEED = 1
     BADDIEMAXSPEED = 4
@@ -88,4 +77,4 @@ elif difficulty == 'hard':
 windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
 
-game(FPS, PLAYERMOVERATE, BADDIEMINSIZE, BADDIEMAXSIZE, mainClock, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)

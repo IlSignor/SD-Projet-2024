@@ -9,6 +9,18 @@ WINDOWHEIGHT = 800
 TEXTCOLOR = (0, 0, 0)
 BUTTONTEXTCOLOR = (255, 255, 255)
 
+BADDIEMINSIZE = 10
+BADDIEMAXSIZE = 40
+PLAYERMOVERATE=5
+
+FPS = 60
+mainClock = pygame.time.Clock()
+
+
+
+
+
+
 # Classe pour gérer l'explosion
 class Explosion:
     def __init__(self, position):
@@ -112,7 +124,7 @@ def drawButton(windowSurface, buttonRect, text, color, hoverColor):
     textRect = textSurf.get_rect(center=buttonRect.center)
     windowSurface.blit(textSurf, textRect)
 
-def showDifficultyMenu(windowSurface,mainClock, FPS):
+def showDifficultyMenu(windowSurface):
     BUTTONCOLOR = (100, 200, 255)
     BUTTONHOVERCOLOR = (150, 220, 255)
     QUITBUTTONCOLOR = (255, 100, 100)
@@ -238,7 +250,7 @@ def pause_menu(windowSurface, font):
                 if quitButtonRect.collidepoint(event.pos):
                     terminate()
 
-def show_game_over_menu(windowSurface, score, FPS, font, mainClock):
+def show_game_over_menu(windowSurface, score, font):
     BUTTONCOLOR = (100, 200, 255)
     BUTTONHOVERCOLOR = (150, 220, 255)
     QUITBUTTONCOLOR = (255, 100, 100)

@@ -2,7 +2,7 @@ import pygame, random, sys
 from pygame.locals import *
 from definition import*
 
-def game(FPS, PLAYERMOVERATE, BADDIEMINSIZE, BADDIEMAXSIZE, mainClock, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
+def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
     while True:
         # Set up the start of the game.
         baddies = []
@@ -158,5 +158,5 @@ def game(FPS, PLAYERMOVERATE, BADDIEMINSIZE, BADDIEMAXSIZE, mainClock, playerRec
         pygame.display.update()
 
         
-        show_game_over_menu(windowSurface,score,FPS, font, mainClock)
+        show_game_over_menu(windowSurface,score, font)
         
