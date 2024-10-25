@@ -9,9 +9,6 @@ WINDOWHEIGHT = 800
 TEXTCOLOR = (0, 0, 0)
 BUTTONTEXTCOLOR = (255, 255, 255)
 
-# Paramètres du jeu
-FPS = 60
-
 # Classe pour gérer l'explosion
 class Explosion:
     def __init__(self, position):
