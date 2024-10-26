@@ -2,6 +2,7 @@ import pygame, random, sys
 from pygame.locals import *
 from definition import*
 
+
 def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
     while True:
         # Set up the start of the game.
@@ -33,8 +34,8 @@ def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BAD
                     if event.key == K_SPACE:
                         shoot(playerRect, bullets) #shoot if the player click space                  
                     if event.key == K_ESCAPE:  # Check for "P" key to pause the game
-                        pause_menu(windowSurface, font)  # Call the pause menu function
-
+                        pause_menu(windowSurface, font)
+                        
                 if event.type == KEYUP:                  
                     if event.key == K_LEFT or event.key == K_a:
                         moveLeft = False
@@ -158,5 +159,4 @@ def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BAD
         pygame.display.update()
 
         
-        show_game_over_menu(windowSurface,score, font)
-        
+        show_game_over_menu(windowSurface,score, font)        

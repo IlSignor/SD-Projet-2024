@@ -1,7 +1,6 @@
 import pygame, random, sys
 from pygame.locals import *
 from definition import*
-from game import*
 
 # Set up pygame, the window, and the mouse cursor.
 pygame.init()
@@ -38,43 +37,43 @@ healthItemImage = pygame.image.load('cherry.png')
 
 backgroundImage = pygame.image.load('background.jpg').convert()
 
+def start():
+    # Show the "Start" screen.
+    windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
-# Show the "Start" screen.
-windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
+    pygame.display.update()
 
-pygame.display.update()
+    topScore = 0
 
-topScore = 0
-drawText('Dodger', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
-drawText('Press a key to start.', font, windowSurface, (WINDOWWIDTH / 3) - 30, (WINDOWHEIGHT / 3) + 50)
+    # Show character selection menu
+    selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font)
+    playerImage = characterImages[selectedCharacterIndex]  # Set player image based on selection
+    playerRect = playerImage.get_rect()  # Get the rectangle for the player
 
-# Show character selection menu
-selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font)
-playerImage = characterImages[selectedCharacterIndex]  # Set player image based on selection
-playerRect = playerImage.get_rect()  # Get the rectangle for the player
+    smallPlayerImage = pygame.transform.scale(playerImage, (30, 30)) 
+    smallPlayerImageGray = pygame.Surface((30, 30))
+    smallPlayerImageGray.blit(smallPlayerImage, (0, 0))
+    smallPlayerImageGray.set_alpha(100)
 
-smallPlayerImage = pygame.transform.scale(playerImage, (30, 30)) 
-smallPlayerImageGray = pygame.Surface((30, 30))
-smallPlayerImageGray.blit(smallPlayerImage, (0, 0))
-smallPlayerImageGray.set_alpha(100)
+    windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
-windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
+    difficulty = showDifficultyMenu(windowSurface)
+    if difficulty == 'easy':
+        BADDIEMINSPEED = 1
+        BADDIEMAXSPEED = 4
+        ADDNEWBADDIERATE = 12
+    elif difficulty == 'medium':
+        BADDIEMINSPEED = 2
+        BADDIEMAXSPEED = 6
+        ADDNEWBADDIERATE = 8
+    elif difficulty == 'hard':
+        BADDIEMINSPEED = 4
+        BADDIEMAXSPEED = 8
+        ADDNEWBADDIERATE = 6
 
-difficulty = showDifficultyMenu(windowSurface)
-if difficulty == 'easy':
-    BADDIEMINSPEED = 1
-    BADDIEMAXSPEED = 4
-    ADDNEWBADDIERATE = 12
-elif difficulty == 'medium':
-    BADDIEMINSPEED = 2
-    BADDIEMAXSPEED = 6
-    ADDNEWBADDIERATE = 8
-elif difficulty == 'hard':
-    BADDIEMINSPEED = 4
-    BADDIEMAXSPEED = 8
-    ADDNEWBADDIERATE = 6
+    windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
-windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
+    from game import game
+    game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
 
-
-game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+start()

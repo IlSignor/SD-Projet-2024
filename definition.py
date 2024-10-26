@@ -17,10 +17,6 @@ FPS = 60
 mainClock = pygame.time.Clock()
 
 
-
-
-
-
 # Classe pour gérer l'explosion
 class Explosion:
     def __init__(self, position):
@@ -134,7 +130,8 @@ def showDifficultyMenu(windowSurface):
     mediumButton = pygame.Rect(300, 300, 200, 50)
     hardButton = pygame.Rect(300, 400, 200, 50)
     quitButton = pygame.Rect(300, 500, 200, 50)
-
+    returnMenuButtonRect = pygame.Rect(300, 600, 200, 50)
+    
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -148,23 +145,25 @@ def showDifficultyMenu(windowSurface):
                     return 'hard'
                 elif quitButton.collidepoint(event.pos):
                     terminate()
+                elif returnMenuButtonRect.collidepoint(event.pos):
+                    from main import start
+                    start()
 
         # Dessiner les boutons
         drawButton(windowSurface, easyButton, 'Facile', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(windowSurface, mediumButton, 'Moyen', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(windowSurface, hardButton, 'Difficile', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(windowSurface, quitButton, 'Quitter', QUITBUTTONCOLOR, QUITBUTTONHOVERCOLOR)
+        drawButton(windowSurface, returnMenuButtonRect, 'Retour au menu', BUTTONCOLOR, BUTTONHOVERCOLOR)
 
         pygame.display.update()
         mainClock.tick(FPS)
-
 
 def move_health_items(healthItems):
     for item in healthItems[:]:
         item['rect'].y += item['speed']
         if item['rect'].top > WINDOWHEIGHT:
             healthItems.remove(item)
-
 
 
 def showCharacterSelectionMenu(windowSurface, characterImage, font):
@@ -225,6 +224,7 @@ def showCharacterSelectionMenu(windowSurface, characterImage, font):
 
 def pause_menu(windowSurface, font):
     quitButtonRect = pygame.Rect((WINDOWWIDTH / 2) - 100, (WINDOWHEIGHT / 2) + 50, 200, 50)
+    returnMenuButtonRect = pygame.Rect((WINDOWWIDTH / 2) - 100, (WINDOWHEIGHT / 2) + 110, 200, 50)
 
     waitingForUnpause = True
     while waitingForUnpause:
@@ -237,7 +237,8 @@ def pause_menu(windowSurface, font):
         drawText('Press ESC to resume.', font, windowSurface, (WINDOWWIDTH / 2) - 150, (WINDOWHEIGHT / 2))
 
         drawButton(windowSurface, quitButtonRect, 'Quitter', (255, 100, 100), (255, 150, 150))
-
+        drawButton(windowSurface, returnMenuButtonRect, 'Retour au menu', (100, 255, 100), (150, 255, 150))
+        
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -249,6 +250,9 @@ def pause_menu(windowSurface, font):
             if event.type == MOUSEBUTTONDOWN:
                 if quitButtonRect.collidepoint(event.pos):
                     terminate()
+                if returnMenuButtonRect.collidepoint(event.pos):
+                    from main import start
+                    start()
 
 def show_game_over_menu(windowSurface, score, font):
     BUTTONCOLOR = (100, 200, 255)
@@ -258,6 +262,7 @@ def show_game_over_menu(windowSurface, score, font):
 
     playAgainButton = pygame.Rect(300, 200, 200, 50)
     quitButton = pygame.Rect(300, 300, 200, 50)
+    returnMenuButtonRect = pygame.Rect((WINDOWWIDTH / 2) - 100, (WINDOWHEIGHT / 2) + 110, 200, 50)
 
     while True:
         for event in pygame.event.get():
@@ -269,12 +274,16 @@ def show_game_over_menu(windowSurface, score, font):
                     return True
                 elif quitButton.collidepoint(event.pos):
                     terminate()
+                elif returnMenuButtonRect.collidepoint(event.pos):
+                    from main import start
+                    start()
 
         windowSurface.fill((255, 255, 255))
         drawText('Game Over', font, windowSurface, 350, 50)
         drawText(f'Your Score: {score}', font, windowSurface, 350, 100)
         drawButton(windowSurface, playAgainButton, 'Play Again', BUTTONCOLOR, BUTTONHOVERCOLOR)
         drawButton(windowSurface, quitButton, 'Quit', QUITBUTTONCOLOR, QUITBUTTONHOVERCOLOR)
+        drawButton(windowSurface, returnMenuButtonRect, 'Retour au menu', (100, 255, 100), (150, 255, 150))
 
         pygame.display.update()
         mainClock.tick(FPS)
