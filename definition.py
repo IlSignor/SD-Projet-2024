@@ -21,16 +21,17 @@ mainClock = pygame.time.Clock()
 class Explosion:
     def __init__(self, position):
         self.sprite_sheet = pygame.image.load('explosions.png').convert_alpha()
-        self.frames = self.extract_frames(self.sprite_sheet, frame_width=30, frame_height=120, num_frames=5)
+        self.frames = self.extract_frames(self.sprite_sheet, frame_width=30, frame_height=30, num_columns=5, num_rows=4)
         self.index = 0
         self.rect = self.frames[self.index].get_rect(center=position)
         self.finished = False
 
-    def extract_frames(self, sprite_sheet, frame_width, frame_height, num_frames):
+    def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
         frames = []
-        for i in range(num_frames):
-            frame = sprite_sheet.subsurface((i * frame_width, 0, frame_width, frame_height))
-            frames.append(frame)
+        for row in range(num_rows):
+            for col in range(num_columns):
+                frame = sprite_sheet.subsurface((col * frame_width, row * frame_height, frame_width, frame_height))
+                frames.append(frame)
         return frames
 
     def update(self):
@@ -43,6 +44,7 @@ class Explosion:
     def draw(self, surface):
         if not self.finished:
             surface.blit(self.frames[self.index], self.rect)
+
 
 def trigger_explosion(explosions, position):
     explosions.append(Explosion(position))
