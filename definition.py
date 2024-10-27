@@ -47,8 +47,7 @@ class FireAnimation:
         # Dessine l'animation de feu sous le joueur
         self.rect.center = (player_rect.centerx, player_rect.bottom + 35)  # Positionner sous le joueur
         surface.blit(self.frames[self.index], self.rect)
-    
-    
+  
 class Explosion:
     def __init__(self, position):
         self.sprite_sheet = pygame.image.load('explosions.png').convert_alpha()
@@ -75,7 +74,6 @@ class Explosion:
     def draw(self, surface):
         if not self.finished:
             surface.blit(self.frames[self.index], self.rect)
-
 
 def trigger_explosion(explosions, position):
     explosions.append(Explosion(position))
