@@ -37,7 +37,8 @@ healthItemImage = pygame.image.load('cherry.png')
 
 backgroundImage = pygame.image.load('background.jpg').convert()
 
-fire_animation = FireAnimation()
+
+
 
 def start():
     # Show the "Start" screen.
@@ -59,24 +60,30 @@ def start():
 
     windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
+    heal_animation = HealAnimation(playerRect.center)
+    fire_animation = FireAnimation()
+
     difficulty = showDifficultyMenu(windowSurface)
     if difficulty == 'easy':
         BADDIEMINSPEED = 1
         BADDIEMAXSPEED = 4
         ADDNEWBADDIERATE = 12
+        HEALTHHAPPEND = 100
     elif difficulty == 'medium':
         BADDIEMINSPEED = 2
         BADDIEMAXSPEED = 6
         ADDNEWBADDIERATE = 8
+        HEALTHHAPPEND = 1000
     elif difficulty == 'hard':
         BADDIEMINSPEED = 4
         BADDIEMAXSPEED = 8
         ADDNEWBADDIERATE = 6
+        HEALTHHAPPEND = 1000
 
     windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
     from game import game
-    game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
 
 
 start()

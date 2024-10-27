@@ -75,6 +75,41 @@ class Explosion:
         if not self.finished:
             surface.blit(self.frames[self.index], self.rect)
 
+class HealAnimation:
+    def __init__(self, position):
+        self.sprite_sheet = pygame.image.load('heal_animation.png').convert_alpha()
+        self.frames = self.extract_frames(self.sprite_sheet, frame_width=96, frame_height=96, num_columns=5, num_rows=3)
+        self.index = 0
+        self.rect = self.frames[self.index].get_rect(center=position)
+        self.finished = False
+        self.animation_speed = 100  # Durée en millisecondes entre les images
+        self.last_update_time = pygame.time.get_ticks()  # Temps de la dernière mise à jour
+
+    def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
+        frames = []
+        for row in range(num_rows):
+            for col in range(num_columns):
+                frame = sprite_sheet.subsurface((col * frame_width, row * frame_height, frame_width, frame_height))
+                frames.append(frame)
+        return frames
+
+    def update(self):
+        current_time = pygame.time.get_ticks()  # Obtenez le temps actuel
+        if current_time - self.last_update_time > self.animation_speed:  # Vérifiez si le temps écoulé est suffisant
+            self.index += 1  # Passez à la frame suivante
+            if self.index >= len(self.frames):
+                self.finished = True  # Terminez l'animation si toutes les frames ont été affichées
+            else:
+                self.rect = self.frames[self.index].get_rect(center=self.rect.center)  # Mettre à jour la position de l'animation
+            self.last_update_time = current_time  # Réinitialisez le temps de la dernière mise à jour
+
+    def draw(self, surface, player_rect):
+        # Positionner l'animation de soin au-dessus du joueur
+        self.rect.center = (player_rect.centerx, player_rect.centery)
+        if not self.finished:
+            surface.blit(self.frames[self.index], self.rect)
+
+
 def trigger_explosion(explosions, position):
     explosions.append(Explosion(position))
 
@@ -371,10 +406,16 @@ def move_health_items(healthItems):
         if item['rect'].top > WINDOWHEIGHT:
             healthItems.remove(item)
 
-def check_health_item_collision(playerRect, healthItems, lives):
+def check_health_item_collision(playerRect, healthItems, lives, heal_animation, windowSurface):
     for item in healthItems[:]:
         if playerRect.colliderect(item['rect']):
             if lives < 3:
                 lives += 1
+                heal_animation = HealAnimation(playerRect.center)  # Créez une nouvelle animation au centre du joueur
             healthItems.remove(item)
-    return lives
+
+            # Initialiser l'animation de soin
+            
+            
+            
+    return lives, heal_animation  # Retournez également l'animation pour mise à jour

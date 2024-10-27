@@ -3,13 +3,13 @@ from pygame.locals import *
 from definition import*
 
 
-def game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
+def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
     while True:
         # Set up the start of the game.
         baddies = []
         score = 0
         lives = 3
-
+        heal_animation = None
         
         playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
         moveLeft = moveRight = moveUp = moveDown = False
@@ -54,7 +54,7 @@ def game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BA
 
                 baddies.append(newBaddie)
             
-            if random.randint(1, 1000) <= 1:  # 5% de chance de spawn
+            if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% de chance de spawn
                 itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 0, 30, 30)
                 healthItems.append({'rect': itemRect, 'speed': random.randint(2, 5)})
 
@@ -119,8 +119,12 @@ def game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BA
                 explosion.draw(windowSurface)
                 
             move_health_items(healthItems)
-            check_health_item_collision(playerRect, healthItems, lives)
+            lives, heal_animation = check_health_item_collision(playerRect, healthItems, lives, heal_animation, windowSurface)
 
+            if heal_animation is not None:
+                heal_animation.update()
+                heal_animation.draw(windowSurface, playerRect)
+            
             for item in healthItems:
                 windowSurface.blit(healthItemImage, item['rect'])
 
