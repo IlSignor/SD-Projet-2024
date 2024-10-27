@@ -3,7 +3,7 @@ from pygame.locals import *
 from definition import*
 
 
-def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
+def game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
     while True:
         # Set up the start of the game.
         baddies = []
@@ -11,7 +11,7 @@ def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BAD
         lives = 3
 
         
-        playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 50)
+        playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
         moveLeft = moveRight = moveUp = moveDown = False
         baddieAddCounter = 0
         pygame.mixer.music.play(-1, 0.0)
@@ -47,7 +47,7 @@ def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BAD
             if baddieAddCounter == ADDNEWBADDIERATE:
                 baddieAddCounter = 0
                 baddieSize = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)
-                newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize),  random.randint(50, 150) - baddieSize, baddieSize, baddieSize),
+                newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize), 100 - baddieSize, baddieSize, baddieSize),
                             'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
                             'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
                             }
@@ -107,6 +107,8 @@ def game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BAD
             move_bullets(bullets)  # Displace the shots
             score = check_bullet_hits(baddies, explosions, score, bullets)
 
+            fire_animation.update()
+            fire_animation.draw(windowSurface, playerRect)
             
             for explosion in explosions[:]:
                 explosion.update()

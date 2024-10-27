@@ -16,8 +16,39 @@ PLAYERMOVERATE=5
 FPS = 60
 mainClock = pygame.time.Clock()
 
+class FireAnimation:
+    def __init__(self):
+        # Charger la sprite sheet et définir les paramètres
+        self.sprite_sheet = pygame.image.load('rocket_fire.png').convert_alpha()
+        self.frame_width = 23
+        self.frame_height = 70
+        self.num_columns = 5
+        self.num_rows = 1
+        self.frames = self.extract_frames(self.sprite_sheet, self.frame_width, self.frame_height, self.num_columns, self.num_rows)
+        self.index = 0
+        self.animation_speed = 5  # Vitesse de l'animation
+        self.rect = self.frames[self.index].get_rect()  # Initialiser le rect
 
-# Classe pour gérer l'explosion
+    def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
+        frames = []
+        for row in range(num_rows):
+            for col in range(num_columns):
+                frame = sprite_sheet.subsurface((col * frame_width, row * frame_height, frame_width, frame_height))
+                frames.append(frame)
+        return frames
+
+    def update(self):
+        # Met à jour l'index de l'animation
+        self.index += 1
+        if self.index >= len(self.frames):
+            self.index = 0  # Remet à zéro pour boucler l'animation
+
+    def draw(self, surface, player_rect):
+        # Dessine l'animation de feu sous le joueur
+        self.rect.center = (player_rect.centerx, player_rect.bottom + 35)  # Positionner sous le joueur
+        surface.blit(self.frames[self.index], self.rect)
+    
+    
 class Explosion:
     def __init__(self, position):
         self.sprite_sheet = pygame.image.load('explosions.png').convert_alpha()

@@ -37,6 +37,8 @@ healthItemImage = pygame.image.load('cherry.png')
 
 backgroundImage = pygame.image.load('background.jpg').convert()
 
+fire_animation = FireAnimation()
+
 def start():
     # Show the "Start" screen.
     windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
@@ -74,6 +76,7 @@ def start():
     windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
 
     from game import game
-    game(playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+    game(fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+
 
 start()
