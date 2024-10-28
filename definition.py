@@ -320,9 +320,5 @@ def check_health_item_collision(playerRect, healthItems, lives, heal_animation, 
                 lives += 1
                 heal_animation = HealAnimation(playerRect.center)  # Créez une nouvelle animation au centre du joueur
             healthItems.remove(item)
-
-            # Initialiser l'animation de soin
-            
-            
-            
+  
     return lives, heal_animation  # Retournez également l'animation pour mise à jour

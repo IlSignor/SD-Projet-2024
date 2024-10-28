@@ -12,7 +12,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
         heal_animation = None
         
         playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
-        moveLeft = moveRight = moveUp = moveDown = False
+        moveLeft = moveRight = False
         baddieAddCounter = 0
         pygame.mixer.music.play(-1, 0.0)
 
@@ -33,7 +33,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
                         moveRight = True
                     if event.key == K_SPACE:
                         shoot(playerRect, bullets) #shoot if the player click space                  
-                    if event.key == K_ESCAPE:  # Check for "P" key to pause the game
+                    if event.key == K_ESCAPE:  # Check for "escape" key to pause the game
                         pause_menu(windowSurface, font)
                         
                 if event.type == KEYUP:                  
@@ -63,10 +63,6 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
                 playerRect.move_ip(-1 * PLAYERMOVERATE, 0)
             if moveRight and playerRect.right < WINDOWWIDTH:
                 playerRect.move_ip(PLAYERMOVERATE, 0)
-            if moveUp and playerRect.top > 0:
-                playerRect.move_ip(0, -1 * PLAYERMOVERATE)
-            if moveDown and playerRect.bottom < WINDOWHEIGHT:
-                playerRect.move_ip(0, PLAYERMOVERATE)
 
             # Move the baddies down.
             for b in baddies:
