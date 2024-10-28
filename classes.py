@@ -1,21 +1,6 @@
 import pygame, random, sys
 from pygame.locals import *
 
-# Configuration de la fenêtre
-WINDOWWIDTH = 1000
-WINDOWHEIGHT = 800
-
-# Couleurs
-TEXTCOLOR = (0, 0, 0)
-BUTTONTEXTCOLOR = (255, 255, 255)
-
-BADDIEMINSIZE = 10
-BADDIEMAXSIZE = 40
-PLAYERMOVERATE=5
-
-FPS = 60
-mainClock = pygame.time.Clock()
-
 class FireAnimation:
     def __init__(self):
         # Charger la sprite sheet et définir les paramètres
