@@ -1,4 +1,4 @@
-import pygame, random, sys
+import pygame, sys
 from pygame.locals import *
 from classes import*
 
@@ -137,7 +137,6 @@ def move_health_items(healthItems):
         item['rect'].y += item['speed']
         if item['rect'].top > WINDOWHEIGHT:
             healthItems.remove(item)
-
 
 def showCharacterSelectionMenu(windowSurface, characterImage, font):
     numCharacters = len(characterImage)

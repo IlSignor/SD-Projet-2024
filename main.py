@@ -1,4 +1,4 @@
-import pygame, random, sys
+import pygame, sys
 from pygame.locals import *
 from definition import*
 
@@ -12,7 +12,7 @@ pygame.display.set_caption('Dodger')
 # Set up the fonts.
 pygame.font.init()
 font = pygame.font.SysFont(None, 48)
-
+smallFont = pygame.font.SysFont(None, 30)
 
 bullets = [] 
 healthItems = [] 
@@ -84,6 +84,56 @@ def start():
 
     from game import game
     game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)
+
+
+
+rules_button = smallFont.render("?", True, (0, 0, 0), (255, 255, 255))
+rules_button_rect = rules_button.get_rect(topright=(windowSurface.get_width() - 20, 20))
+
+# Texte des règles du jeu
+rules_text = [
+    "Règles du jeu Dodger :",
+    "1. Évitez les ennemis en vous déplaçant.",
+    "2. Ramassez les objets de soin pour regagner de la vie.",
+    "3. Utilisez les flèches pour contrôler le personnage.",
+    "4. Essayez de survivre aussi longtemps que possible!"
+]
+
+# Surface des règles
+rule_window = pygame.Surface((600, 400))
+rule_window.fill((50, 50, 50))  # Couleur de fond pour les règles
+y_offset = 50
+for line in rules_text:
+    drawText(line, smallFont, rule_window, 20, y_offset)  # Utilisation de drawText pour les règles
+    y_offset += 40
+
+# Variables de contrôle
+showing_rules = False
+waiting = True
+
+# Boucle principale du menu de démarrage
+while waiting:
+    windowSurface.blit(backgroundImage, (0, 0))
+    drawText("Pressez ENTER pour lancer le jeu", font, windowSurface, windowSurface.get_width() // 2 - 200, windowSurface.get_height() // 2)
+    windowSurface.blit(rules_button, rules_button_rect)
+
+    if showing_rules:
+        windowSurface.blit(rule_window, (100, 100))
+
+    pygame.display.update()
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == KEYDOWN:
+            if event.key == K_RETURN or event.key == K_KP_ENTER:
+                waiting = False  # Quitter le menu pour lancer le jeu
+            elif event.key == K_ESCAPE and showing_rules:
+                showing_rules = False
+        elif event.type == MOUSEBUTTONDOWN:
+            if rules_button_rect.collidepoint(event.pos):  # Si le bouton "?" est cliqué
+                showing_rules = not showing_rules
 
 
 start()

@@ -1,4 +1,4 @@
-import pygame, random, sys
+import pygame
 from pygame.locals import *
 
 class FireAnimation:
