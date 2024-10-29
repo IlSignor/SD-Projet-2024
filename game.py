@@ -1,164 +1,160 @@
+#importations of the modulus and files
 import pygame, random
 from pygame.locals import *
 from definition import*
 
+#################################       Game defintion         #############################################
 
-def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE,BADDIEMINSPEED,BADDIEMAXSPEED,baddieImage,healthItems,healthItemImage,backgroundImage,font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
-    while True:
-        # Set up the start of the game.
-        baddies = []
-        score = 0
-        lives = 3
-        heal_animation = None
-        
+def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
+    while True:                            # Main game loop
+        # Initialize game variables.
+        baddies = []                       # List to hold baddie objects.
+        score = 0                          # Player's score.
+        lives = 3                          # Player's lives.
+        heal_animation = None               # Healing animation.
+
+        # Set player position at the bottom center of the window.
         playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
-        moveLeft = moveRight = False
-        baddieAddCounter = 0
-        pygame.mixer.music.play(-1, 0.0)
+        moveLeft = moveRight = False       # Movement flags for player.
+        baddieAddCounter = 0                # Counter to control baddie spawning.
+        pygame.mixer.music.play(-1, 0.0)   # Play background music in a loop.
 
-        while True: # The game loop runs while the game part is playing.
-            score += 1 # Increase score.
-            
-            for event in pygame.event.get():
+        while True:                        # The game loop runs while the game is active.
+            score += 1                     # Increment score.
 
+            for event in pygame.event.get():  # Event handling.
                 if event.type == QUIT:
-                    terminate()
+                    terminate()              # Close the game.
 
-                if event.type == KEYDOWN:
-                    if event.key == K_LEFT or event.key == K_a:
+                if event.type == KEYDOWN:  # Key pressed event.
+                    if event.key == K_LEFT or event.key == K_a:  # Move left.
                         moveRight = False
                         moveLeft = True
-                    if event.key == K_RIGHT or event.key == K_d:
+                    if event.key == K_RIGHT or event.key == K_d:  # Move right.
                         moveLeft = False
                         moveRight = True
-                    if event.key == K_SPACE:
-                        shoot(playerRect, bullets) #shoot if the player click space                  
-                    if event.key == K_ESCAPE:  # Check for "escape" key to pause the game
+                    if event.key == K_SPACE:  # Shoot when space is pressed.
+                        shoot(playerRect, bullets) 
+                    if event.key == K_ESCAPE:  # Open pause menu.
                         pause_menu(windowSurface, font)
-                        
-                if event.type == KEYUP:                  
+
+                if event.type == KEYUP:     # Key released event.
                     if event.key == K_LEFT or event.key == K_a:
                         moveLeft = False
                     if event.key == K_RIGHT or event.key == K_d:
                         moveRight = False
 
             # Add new baddies at the top of the screen, if needed.
-            baddieAddCounter += 1
-            if baddieAddCounter == ADDNEWBADDIERATE:
-                baddieAddCounter = 0
-                baddieSize = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)
-                newBaddie = {'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize), 100 - baddieSize, baddieSize, baddieSize),
-                            'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
-                            'surface':pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
-                            }
+            baddieAddCounter += 1              # Increment counter for baddie spawning.
+            if baddieAddCounter == ADDNEWBADDIERATE:  # Check if it's time to add a new baddie.
+                baddieAddCounter = 0            # Reset the counter.
+                baddieSize = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)  # Randomize baddie size.
+                # Create a new baddie object.
+                newBaddie = {
+                    'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddieSize), 100 - baddieSize, baddieSize, baddieSize),
+                    'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
+                    'surface': pygame.transform.scale(baddieImage, (baddieSize, baddieSize)),
+                }
+                baddies.append(newBaddie)      # Add the new baddie to the list.
 
-                baddies.append(newBaddie)
-            
-            if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% de chance de spawn
-                itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 0, 30, 30)
-                healthItems.append({'rect': itemRect, 'speed': random.randint(2, 5)})
+            # Randomly spawn health items.
+            if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% chance to spawn health item.
+                itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 0, 30, 30)  # Create item rectangle.
+                healthItems.append({'rect': itemRect, 'speed': random.randint(2, 5)})  # Add to health items list.
 
-            # Move the player around.
-            if moveLeft and playerRect.left > 0:
-                playerRect.move_ip(-1 * PLAYERMOVERATE, 0)
-            if moveRight and playerRect.right < WINDOWWIDTH:
-                playerRect.move_ip(PLAYERMOVERATE, 0)
+            # Move the player around based on input.
+            if moveLeft and playerRect.left > 0:  # Move left if within bounds.
+                playerRect.move_ip(-1 * PLAYERMOVERATE, 0)  # Move player left.
+            if moveRight and playerRect.right < WINDOWWIDTH:  # Move right if within bounds.
+                playerRect.move_ip(PLAYERMOVERATE, 0)  # Move player right.
 
-            # Move the baddies down.
+            # Move the baddies down the screen.
             for b in baddies:
-                b['rect'].move_ip(0, b['speed'])
+                b['rect'].move_ip(0, b['speed'])  # Move each baddie down based on its speed.
                 
-            # Déplacer les items de soin vers le bas
+            # Move health items down the screen.
             move_health_items(healthItems)
 
-            # Afficher chaque item de soin
+            # Display each health item.
             for item in healthItems:
-                windowSurface.blit(healthItemImage, item['rect'])
-
+                windowSurface.blit(healthItemImage, item['rect'])  # Draw health item.
 
             # Delete baddies that have fallen past the bottom.
             for b in baddies[:]:
-                if b['rect'].top > WINDOWHEIGHT:
-                    baddies.remove(b)
-
-
-
+                if b['rect'].top > WINDOWHEIGHT:  # If baddie is off screen.
+                    baddies.remove(b)              # Remove it from the list.
 
             # Draw the game world on the window.
-            windowSurface.blit(backgroundImage, (0, 0))  # Affiche l'image de fond à partir du coin supérieur gauche
-
+            windowSurface.blit(backgroundImage, (0, 0))  # Draw background image at the top left.
 
             # Draw the score and top score.
-            drawText('Score: %s' % (score), font, windowSurface, 800, 0)
-            drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 0)
-            draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)
-            # Draw the player's rectangle.
-            windowSurface.blit(playerImage, playerRect)
+            drawText('Score: %s' % (score), font, windowSurface, 800, 0)  # Draw current score.
+            drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 0)  # Draw top score.
+            draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)  # Display lives.
+            windowSurface.blit(playerImage, playerRect)  # Draw the player's rectangle.
 
             # Draw each baddie.
             for b in baddies:
-                windowSurface.blit(b['surface'], b['rect'])
-            
-                
-            move_bullets(bullets)  # Displace the shots
-            score = check_bullet_hits(baddies, explosions, score, bullets)
+                windowSurface.blit(b['surface'], b['rect'])  # Draw baddie.
 
-            fire_animation.update()
-            fire_animation.draw(windowSurface, playerRect)
-            
+            move_bullets(bullets)  # Move the bullets.
+            score = check_bullet_hits(baddies, explosions, score, bullets)  # Check for bullet hits.
+
+            fire_animation.update()  # Update fire animation.
+            fire_animation.draw(windowSurface, playerRect)  # Draw fire animation on player.
+
+            # Manage explosions.
             for explosion in explosions[:]:
-                explosion.update()
-                if explosion.finished:
-                    explosions.remove(explosion)
+                explosion.update()  # Update each explosion.
+                if explosion.finished:  # Check if explosion is finished.
+                    explosions.remove(explosion)  # Remove it if done.
 
             for explosion in explosions:
-                explosion.draw(windowSurface)
+                explosion.draw(windowSurface)  # Draw each explosion.
                 
-            move_health_items(healthItems)
-            lives, heal_animation = check_health_item_collision(playerRect, healthItems, lives, heal_animation, windowSurface)
+            move_health_items(healthItems)  # Move health items down.
+            lives, heal_animation = check_health_item_collision(playerRect, healthItems, lives, heal_animation)  # Check for collisions with health items.
 
-            if heal_animation is not None:
-                heal_animation.update()
-                heal_animation.draw(windowSurface, playerRect)
+            if heal_animation is not None:  # If there is an active heal animation.
+                heal_animation.update()  # Update the healing animation.
+                heal_animation.draw(windowSurface, playerRect)  # Draw healing animation on player.
             
             for item in healthItems:
-                windowSurface.blit(healthItemImage, item['rect'])
+                windowSurface.blit(healthItemImage, item['rect'])  # Draw health items.
 
-            # Draw the shots
+            # Draw the shots.
             for bullet in bullets:
-                pygame.draw.rect(windowSurface, (255, 0, 0), bullet)  # Red shots
+                pygame.draw.rect(windowSurface, (255, 0, 0), bullet)  # Draw red bullets.
             
+            pygame.display.update()  # Update the display.
 
-            pygame.display.update()
+            hitBaddie = playerHasHitBaddie(playerRect, baddies)  # Check for collision with baddies.
 
-
-            hitBaddie = playerHasHitBaddie(playerRect, baddies)  # Vérifie la collision
-
-            if playerRect.topleft < (0, 0):
-                break  # Termine la boucle de jeu
+            if playerRect.topleft < (0, 0):  # Check if player is off screen.
+                break  # End the game loop.
             
-            if hitBaddie:  # Si une collision a eu lieu
-                lives -= 1
-                trigger_explosion(explosions, hitBaddie['rect'].center)
-                baddies.remove(hitBaddie)  # Supprime uniquement le baddie en collision
-                if lives <= 0:
-                    playerRect.topleft = (-10000, -10000)
-                    if score > topScore:
-                        topScore = score  # Met à jour le meilleur score
+            if hitBaddie:  # If a collision has occurred.
+                lives -= 1  # Decrease lives.
+                trigger_explosion(explosions, hitBaddie['rect'].center)  # Trigger explosion at collision point.
+                baddies.remove(hitBaddie)  # Remove the hit baddie.
+                if lives <= 0:  # If no lives left.
+                    playerRect.topleft = (-10000, -10000)  # Move player off-screen.
+                    if score > topScore:  # If the score beats the top score.
+                        topScore = score  # Update the top score.
 
-            mainClock.tick(FPS)
+            mainClock.tick(FPS)  # Control the frame rate.
 
         # Stop the game and show the "Game Over" screen.
-        pygame.mixer.music.stop()
-        gameOverSound.play()
-        clear_lives_area(windowSurface, backgroundImage)
+        pygame.mixer.music.stop()  # Stop the background music.
+        gameOverSound.play()  # Play game over sound.
+        clear_lives_area(windowSurface, backgroundImage)  # Clear the area showing lives.
 
+        # Draw game over information.
+        draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=True)  # Show lives.
+        drawText('GAME OVER', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))  # Display game over message.
+        drawText('Press a key to play again.', font, windowSurface, (WINDOWWIDTH / 3) - 80, (WINDOWHEIGHT / 3) + 50)  # Prompt for replay.
 
-        draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=True)
-        drawText('GAME OVER', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))
-        drawText('Press a key to play again.', font, windowSurface, (WINDOWWIDTH / 3) - 80, (WINDOWHEIGHT / 3) + 50)
+        pygame.display.update()  # Update display after drawing.
 
-        pygame.display.update()
+        show_game_over_menu(windowSurface, score, font)  # Show game over menu.
 
-        
-        show_game_over_menu(windowSurface,score, font)        
