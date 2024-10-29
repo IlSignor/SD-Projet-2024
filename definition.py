@@ -138,7 +138,7 @@ def move_health_items(healthItems):
         if item['rect'].top > WINDOWHEIGHT:
             healthItems.remove(item)
 
-def showCharacterSelectionMenu(windowSurface, characterImage, font):
+def showCharacterSelectionMenu(windowSurface, characterImage, font, playerRect):
     numCharacters = len(characterImage)
 
     # Définir le bouton Quitter
@@ -148,22 +148,35 @@ def showCharacterSelectionMenu(windowSurface, characterImage, font):
         # Chargement de l'image de fond
         backgroundImage = pygame.image.load('background.jpg').convert()
         windowSurface.blit(backgroundImage, (0, 0))
+        borderOffset = 15  # Décalage pour centrer la bordure autour de l'image
 
         # Obtenir la position de la souris
         mouseX, mouseY = pygame.mouse.get_pos()
 
         # Afficher les personnages
+        # Afficher les personnages
         for i in range(numCharacters):
+            # Position de chaque personnage
+            playerX = 100 + i * 150
+            playerY = 200
+
+            # Mettre à jour la position de playerRect pour chaque personnage
+            playerRect.topleft = (playerX, playerY)
+
             # Vérifier si la souris est au-dessus du personnage
-            isMouseOver = (
-                100 + i * 150 <= mouseX <= 100 + i * 150 + 130 and
-                200 <= mouseY <= 200 + 130
-            )
+            isMouseOver = playerRect.collidepoint(mouseX, mouseY)
 
             # Dessiner la bordure uniquement si survolé
             if isMouseOver:
                 borderColor = (255, 255, 0)
-                pygame.draw.rect(windowSurface, borderColor, (100 + i * 150, 200, 130, 130), 5)
+                
+                # Centrer la bordure autour de l'image
+                borderOffset = 15  # Décalage pour centrer la bordure autour de l'image
+                borderRect = playerRect.inflate(2 * borderOffset, 2 * borderOffset)
+                
+                pygame.draw.rect(windowSurface, borderColor, borderRect, 5)
+
+
 
             # Afficher l'image du personnage
             windowSurface.blit(characterImage[i], (100 + i * 150, 200))

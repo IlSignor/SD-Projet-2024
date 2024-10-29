@@ -49,7 +49,9 @@ def start():
     topScore = 0
 
     # Show character selection menu
-    selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font)
+    playerFirstRect = characterImages[1].get_rect()
+    
+    selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font, playerFirstRect)
     playerImage = characterImages[selectedCharacterIndex]  # Set player image based on selection
     playerRect = playerImage.get_rect()  # Get the rectangle for the player
 
