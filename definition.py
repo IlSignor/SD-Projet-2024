@@ -41,10 +41,10 @@ def drawButton(windowSurface, buttonRect, text, color, hoverColor): # Function t
     mousePos = pygame.mouse.get_pos()             # Get the position of the mouse
     # Change button color if mouse is over it
     if buttonRect.collidepoint(mousePos):          # Check if mouse is over button
-        pygame.draw.rect(windowSurface, hoverColor, buttonRect) # Draw hover color
+        pygame.draw.rect(windowSurface, hoverColor, buttonRect, border_radius=10) # Draw hover color
     else:
-        pygame.draw.rect(windowSurface, color, buttonRect) # Draw normal color
-    font_path = "SpaceAge.ttf"                       # Load the font path
+        pygame.draw.rect(windowSurface, color, buttonRect, border_radius=10) # Draw normal color
+    font_path = "SpaceAge.ttf"
     buttonFont = pygame.font.Font(font_path, 40)     # Define button font
     textSurf = buttonFont.render(text, True, BUTTONTEXTCOLOR) # Render button text
     textRect = textSurf.get_rect(center=buttonRect.center) # Get text rect centered in button
