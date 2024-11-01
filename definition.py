@@ -44,8 +44,8 @@ def drawButton(windowSurface, buttonRect, text, color, hoverColor): # Function t
         pygame.draw.rect(windowSurface, hoverColor, buttonRect) # Draw hover color
     else:
         pygame.draw.rect(windowSurface, color, buttonRect) # Draw normal color
-
-    buttonFont = pygame.font.SysFont(None, 40)     # Define button font
+    font_path = "SpaceAge.ttf"                       # Load the font path
+    buttonFont = pygame.font.Font(font_path, 40)     # Define button font
     textSurf = buttonFont.render(text, True, BUTTONTEXTCOLOR) # Render button text
     textRect = textSurf.get_rect(center=buttonRect.center) # Get text rect centered in button
     windowSurface.blit(textSurf, textRect)          # Blit the text onto the button

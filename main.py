@@ -62,9 +62,11 @@ windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Set up t
 pygame.display.set_caption('Dodger')            # Set the window title.
 
 # Set up the fonts.
-pygame.font.init()                              # Initialize font module.
-font = pygame.font.SysFont(None, 48)           # Load the main font.
-smallFont = pygame.font.SysFont(None, 30)      # Load a smaller font.
+pygame.font.init()
+# Initialize font module.
+font_path = "SpaceAge.ttf"                       # Load the font path.
+font = pygame.font.Font(font_path, 40)           # Load the main font.
+smallFont = pygame.font.Font(font_path, 30)      # Load a smaller font.
 
 bullets = []                                    # List to hold bullets.
 healthItems = []                                # List to hold health items.
