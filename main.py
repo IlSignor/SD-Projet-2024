@@ -78,12 +78,12 @@ pygame.mixer.music.load('background.mid')      # Load background music.
 
 # Set up images.
 characterImages = [                             # List of character images.
-    pygame.image.load('player1.png'),
-    pygame.image.load('player2.png'),
-    pygame.image.load('player3.png'),
-    pygame.image.load('player4.png'),
-    pygame.image.load('player5.png'),
-    pygame.image.load('player6.png')
+    pygame.image.load('players/player1.png'),
+    pygame.image.load('players/player2.png'),
+    pygame.image.load('players/player3.png'),
+    pygame.image.load('players/player4.png'),
+    pygame.image.load('players/player5.png'),
+    pygame.image.load('players/player6.png')
 ]
 
 baddieImage = pygame.image.load('baddie.png')                      # Load baddie image.

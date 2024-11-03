@@ -5,7 +5,7 @@ from pygame.locals import *
 # Class to manage the fire animation beneath the player's character and the baddies
 class FireAnimation:
     def __init__(self):
-        self.sprite_sheet = pygame.image.load('rocket_fire.png').convert_alpha()      # Load the sprite sheet image for the fire effect
+        self.sprite_sheet = pygame.image.load('animations/rocket_fire.png').convert_alpha()      # Load the sprite sheet image for the fire effect
         self.frame_width = 23                                                          # Set the width of each frame
         self.frame_height = 70                                                         # Set the height of each frame
         self.num_columns = 5                                                           # Set the number of frames per row
@@ -39,7 +39,7 @@ class FireAnimation:
 # Class to manage explosion animations
 class Explosion:
     def __init__(self, position):
-        self.sprite_sheet = pygame.image.load('explosions.png').convert_alpha()        # Load the sprite sheet for explosions
+        self.sprite_sheet = pygame.image.load('animations/explosions.png').convert_alpha()        # Load the sprite sheet for explosions
         self.frames = self.extract_frames(self.sprite_sheet, frame_width=30,           # Extract explosion frames using frame dimensions
                                           frame_height=30, num_columns=5,              # and sprite sheet layout
                                           num_rows=4)
@@ -71,7 +71,7 @@ class Explosion:
 # Class to manage the healing animation displayed above the player's character
 class HealAnimation:
     def __init__(self, position):
-        self.sprite_sheet = pygame.image.load('heal_animation.png').convert_alpha()    # Load the sprite sheet image for healing effect
+        self.sprite_sheet = pygame.image.load('animations/heal_animation.png').convert_alpha()    # Load the sprite sheet image for healing effect
         self.frames = self.extract_frames(self.sprite_sheet, frame_width=96,           # Extract frames using specified dimensions
                                           frame_height=96, num_columns=5,              # for each frame and sprite sheet layout
                                           num_rows=3)
