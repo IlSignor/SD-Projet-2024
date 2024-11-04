@@ -30,7 +30,7 @@ def start():                                      # Function to start the game.
     heal_animation = HealAnimation(playerRect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
-    difficulty = showDifficultyMenu(windowSurface)  # Show difficulty menu.
+    difficulty = showDifficultyMenu(windowSurface, font)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
         BADDIEMINSPEED = 1                            # Set minimum baddie speed.
         BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
@@ -50,7 +50,7 @@ def start():                                      # Function to start the game.
     windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)  # Start the game.
+    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)  # Start the game.
 
 
 #################################       Initialization and starting of the game         #############################################
@@ -59,7 +59,7 @@ pygame.init()                                   # Initialize Pygame.
 
 windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Set up the window size.
 
-pygame.display.set_caption('Dodger')            # Set the window title.
+pygame.display.set_caption('Space Shooter')            # Set the window title.
 
 # Set up the fonts.
 pygame.font.init()
@@ -96,17 +96,19 @@ RulesRect.topright = (windowSurface.get_width() - 20, 20)           # Position t
 
 # Game rules text
 rules_text = [                                              # List of rules for the game
-    "Règles du jeu Dodger :",
-    "1. Évitez les ennemis en vous déplaçant.",
-    "2. Ramassez les objets de soin pour regagner de la vie.",
-    "3. Utilisez les flèches pour contrôler le personnage.",
-    "4. Essayez de survivre aussi longtemps que possible!"
+    "Rules of the game :",
+    "1   Avoid objects by moving",
+    "2  Collect healing items to regain health.",
+    "3  Use the  arrows to control the player.",
+    "4  Use the spacebar to shoot bullets.",
+    "5  Press ESC to pause the game.",
+    "6  Try to survive as long as possible!"
 ]
 
 # Surface for the rules window
-rule_window = pygame.Surface((600, 400))                    # Create a surface with 600x400 pixels for the rules window
-rule_window.fill((50, 50, 50))                              # Fill the rules window with a background color (dark gray)
-y_offset = 50                                               # Set initial vertical offset for displaying text within the rules window
+rule_window = pygame.Surface((800, 360))                    # Create a surface with 800X360 pixels for the rules window
+rule_window.fill((255, 255, 255))                           # Fill the rules window with a background color (white)
+y_offset = 40                                               # Set initial vertical offset for displaying text within the rules window
 for line in rules_text:                                     # Loop through each rule in the rules list
     drawText(line, smallFont, rule_window, 20, y_offset)    # Use drawText function to render each rule line
     y_offset += 40                                          # Increment vertical offset for the next line of text
@@ -120,14 +122,15 @@ while waiting:                                              # Loop until the pla
     windowSurface.blit(backgroundImage, (0, 0))             # Display the background image
 
     # Display start game message
-    drawText("Pressez ENTER pour lancer le jeu", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Pressez ENTER pour lancer le jeu")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
+    drawText("Welcome to the Space Shooter", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), windowSurface.get_height() // 2 - 100) 
+    drawText("Press ENTER to start the game", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
 
     # Display the rules button
     drawButton(windowSurface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
 
     # If the rules should be shown, display the rules window
     if showing_rules:                                                       # Check if the rules window is active
-        windowSurface.blit(rule_window, (100, 100))                         # Display the rules window at position (100, 100)
+        windowSurface.blit(rule_window, (100, 220))                         # Display the rules window at position (100, 100)
 
     pygame.display.update()                                                 # Update the display to show all drawn elements
 
