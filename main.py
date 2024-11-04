@@ -8,25 +8,26 @@ from definition import*
 def start():                                      # Function to start the game.
     # Show the "Start" screen.
     windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
-
+    
     pygame.display.update()                       # Update the display.
 
     topScore = 0                                  # Initialize top score.
 
     # Show character selection menu.
-    playerFirstRect = characterImages[1].get_rect()  # Get rectangle for first character image.
+    playerFirstRect = pygame.transform.scale(characterImages[0], (40, 40)).get_rect()  # Get rectangle for first character image.
     
     selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font, playerFirstRect)  # Display character selection.
-    playerImage = characterImages[selectedCharacterIndex]  # Set player image based on selection.
+    playerImage = pygame.transform.scale(characterImages[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
+    playerImageRight = pygame.transform.scale(characterImagesRight[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
+    playerImageLeft = pygame.transform.scale(characterImagesLeft[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
     playerRect = playerImage.get_rect()            # Get the rectangle for the player.
-
+    
     smallPlayerImage = pygame.transform.scale(playerImage, (30, 30))  # Scale down player image for display.
     smallPlayerImageGray = pygame.Surface((30, 30))  # Create a surface for the gray version.
     smallPlayerImageGray.blit(smallPlayerImage, (0, 0))  # Copy small player image to gray surface.
     smallPlayerImageGray.set_alpha(100)              # Set transparency for gray image.
 
     windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
-
     heal_animation = HealAnimation(playerRect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
@@ -50,8 +51,7 @@ def start():                                      # Function to start the game.
     windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore)  # Start the game.
-
+    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, playerImageLeft, playerImageRight, explosions, gameOverSound, topScore)
 
 #################################       Initialization and starting of the game         #############################################
 
@@ -85,6 +85,23 @@ characterImages = [                             # List of character images.
     pygame.image.load('players/player5.png'),
     pygame.image.load('players/player6.png')
 ]
+characterImagesRight = [                             # List of character images for right rotations.
+    pygame.image.load('playersright/player1.png'),
+    pygame.image.load('playersright/player2.png'),
+    pygame.image.load('playersright/player3.png'),
+    pygame.image.load('playersright/player4.png'),
+    pygame.image.load('playersright/player5.png'),
+    pygame.image.load('playersright/player6.png')
+]
+
+characterImagesLeft = [                             # List of character images for left rotations.
+    pygame.image.load('playersleft/player1.png'),
+    pygame.image.load('playersleft/player2.png'),
+    pygame.image.load('playersleft/player3.png'),
+    pygame.image.load('playersleft/player4.png'),
+    pygame.image.load('playersleft/player5.png'),
+    pygame.image.load('playersleft/player6.png')
+]
 
 baddieImage = pygame.image.load('baddie.png')                      # Load baddie image.
 healthItemImage = pygame.image.load('cherry.png')                  # Load health item image.
@@ -98,10 +115,10 @@ RulesRect.topright = (windowSurface.get_width() - 20, 20)           # Position t
 rules_text = [                                              # List of rules for the game
     "Rules of the game :",
     "1   Avoid objects by moving",
-    "2  Collect healing items to regain health.",
-    "3  Use the  arrows to control the player.",
-    "4  Use the spacebar to shoot bullets.",
-    "5  Press ESC to pause the game.",
+    "2  Collect healing items to regain health",
+    "3  Use the  arrows to control the player",
+    "4  Use the spacebar to shoot bullets",
+    "5  Press ESC to pause the game",
     "6  Try to survive as long as possible!"
 ]
 

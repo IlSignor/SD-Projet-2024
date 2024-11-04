@@ -62,7 +62,7 @@ def shoot(playerRect, bullets):                    # Function to shoot a bullet
 def move_bullets(bullets):                         # Function to move bullets
     for bullet in bullets[:]:                      # Iterate through bullets
         bullet.y -= 10                             # Move bullet up
-        if bullet.bottom < 0:                      # Check if bullet is out of screen
+        if bullet.bottom < 100:                      # Check if bullet is out of screen
             bullets.remove(bullet)                 # Remove bullet if it goes out
 
 def check_bullet_hits(baddies, explosions, score, bullets): # Function to check bullet hits
@@ -82,12 +82,12 @@ def check_bullet_hits(baddies, explosions, score, bullets): # Function to check 
 def draw_lives(surface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver): # Function to draw lives
     for i in range(3):                             # Loop for 3 lives
         if isGameOver:                             # If the game is over
-            surface.blit(smallPlayerImageGray, (500 + i * 45, 10)) # Draw gray image
+            surface.blit(smallPlayerImageGray, (455 + i * 45, 10)) # Draw gray image
         else:                                      # If the game is not over
             if i < lives:                          # If player has life
-                surface.blit(smallPlayerImage, (500 + i * 45, 10)) # Draw normal image
+                surface.blit(smallPlayerImage, (455 + i * 45, 10)) # Draw normal image
             else:                                  # If player is out of life
-                surface.blit(smallPlayerImageGray, (500 + i * 45, 10)) # Draw gray image
+                surface.blit(smallPlayerImageGray, (455 + i * 45, 10)) # Draw gray image
 
 def clear_lives_area(surface, backgroundImage):   # Function to clear the lives area
     lives_area = pygame.Rect(500, 10, 3 * 45, 30) # Define the lives area
@@ -144,7 +144,9 @@ def showCharacterSelectionMenu(windowSurface, characterImage, font, playerRect):
                 
                 pygame.draw.rect(windowSurface, borderColor, borderRect, 5) # Draw border
 
-            windowSurface.blit(characterImage[i], (100 + i * 150, 200)) # Blit character image
+
+            windowSurface.blit(pygame.transform.scale(characterImage[i], (40, 40)), (100 + i * 150, 200))  # Blit character image
+
 
         drawText('Click on a player to select', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Click on a player to select")[0] // 2), 400) # Display instructions
 
@@ -221,7 +223,7 @@ def pause_menu(windowSurface, font):                      # Function to show the
 
         windowSurface.blit(transparent_surface, (0, 0))             # Blit the transparent surface
         drawText('Paused', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Paused")[0] // 2), 300) # Draw pause text
-        drawText('Press ESC to resume.', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ESC to resume.")[0] // 2), 400) # Draw resume instruction
+        drawText('Press ESC to resume', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ESC to resume")[0] // 2), 400) # Draw resume instruction
 
         drawButton(windowSurface, returnMenuButtonRect, 'Menu', (100, 200, 255), (150, 220, 255)) # Draw return menu button
         drawButton(windowSurface, quitButtonRect, 'Quit', (255, 100, 100), (255, 150, 150)) # Draw Quit button
@@ -271,9 +273,9 @@ def show_game_over_menu(windowSurface, score, font, smallFont, topScore):    # F
         transparent_surface.fill((220, 220, 220))                   # Fill with a color
 
         windowSurface.blit(transparent_surface, (0, 0))             # Blit the transparent surface
-        drawText('Game Over', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over")[0] // 2), 150)       # Draw Game Over text
-        drawText(f'Your Score: {score}', smallFont, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over")[0] // 2), 200) # Draw score text
-        drawText('Top Score: %s' % (topScore), smallFont, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over")[0] // 2), 250)  # Draw top score.
+        drawText('Game Over!', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 150)       # Draw Game Over text
+        drawText(f'Your Score: {score}', smallFont, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 200) # Draw score text
+        drawText('Top Score: %s' % (topScore), smallFont, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 250)  # Draw top score.
         drawButton(windowSurface, playAgainButton, 'Play Again', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw Play Again button
         drawButton(windowSurface, returnMenuButtonRect, 'Menu', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw return button
         drawButton(windowSurface, quitButton, 'Quit', QUITBUTTONCOLOR, QUITBUTTONHOVERCOLOR) # Draw Quit button

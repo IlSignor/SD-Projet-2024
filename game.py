@@ -5,13 +5,14 @@ from definition import*
 
 #################################       Game defintion         #############################################
 
-def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, explosions, gameOverSound, topScore):
+def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, playerImageLeft, playerImageRight, explosions, gameOverSound, topScore):
     while True:                            # Main game loop
         # Initialize game variables.
         baddies = []                       # List to hold baddie objects.
         score = 0                          # Player's score.
         lives = 3                          # Player's lives.
         heal_animation = None               # Healing animation.
+        rotation = "None"                   # The player doesn't rotate
 
         # Set player position at the bottom center of the window.
         playerRect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
@@ -21,7 +22,6 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
 
         while True:                        # The game loop runs while the game is active.
             score += 1                     # Increment score.
-
             for event in pygame.event.get():  # Event handling.
                 if event.type == QUIT:
                     terminate()              # Close the game.
@@ -30,15 +30,18 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
                     if event.key == K_LEFT or event.key == K_a:  # Move left.
                         moveRight = False
                         moveLeft = True
+                        rotation = "Left"                         # The player rotate left
                     if event.key == K_RIGHT or event.key == K_d:  # Move right.
                         moveLeft = False
-                        moveRight = True
+                        rotation = "Right"                         # The player rotate right
+
                     if event.key == K_SPACE:  # Shoot when space is pressed.
                         shoot(playerRect, bullets) 
                     if event.key == K_ESCAPE:  # Open pause menu.
                         pause_menu(windowSurface, font)
 
                 if event.type == KEYUP:     # Key released event.
+                    rotation = "None"  # The player doesn't rotate
                     if event.key == K_LEFT or event.key == K_a:
                         moveLeft = False
                     if event.key == K_RIGHT or event.key == K_d:
@@ -59,14 +62,16 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
 
             # Randomly spawn health items.
             if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% chance to spawn health item.
-                itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 0, 30, 30)  # Create item rectangle.
+                itemRect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 100, 30, 30)  # Create item rectangle.
                 healthItems.append({'rect': itemRect, 'speed': random.randint(2, 5)})  # Add to health items list.
 
             # Move the player around based on input.
             if moveLeft and playerRect.left > 0:  # Move left if within bounds.
                 playerRect.move_ip(-1 * PLAYERMOVERATE, 0)  # Move player left.
+                windowSurface.blit(playerImage, playerRect)
             if moveRight and playerRect.right < WINDOWWIDTH:  # Move right if within bounds.
                 playerRect.move_ip(PLAYERMOVERATE, 0)  # Move player right.
+                windowSurface.blit(playerImage, playerRect)
 
             # Move the baddies down the screen.
             for b in baddies:
@@ -88,10 +93,19 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
             windowSurface.blit(backgroundImage, (0, 0))  # Draw background image at the top left.
 
             # Draw the score and top score.
-            drawText('Score: %s' % (score), smallFont, windowSurface, 750, 0)  # Draw current score.
-            drawText('Top Score: %s' % (topScore), smallFont, windowSurface, 10, 0)  # Draw top score.
+            banner = pygame.Surface((1000, 50))                     # Create a surface with 1000X50 pixels for the banner
+            banner.fill((255, 255, 255))                            # Fill the banner
+            windowSurface.blit(banner, (0, 0))                      # Draw the banner
+            drawText('Score: %s' % (score), smallFont, windowSurface, 750, 10)  # Draw current score.
+            drawText('Top Score: %s' % (topScore), smallFont, windowSurface, 10, 10)  # Draw top score.
             draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)  # Display lives.
-            windowSurface.blit(playerImage, playerRect)  # Draw the player's rectangle.
+            
+            if rotation == "None":                                  # If the player doesn't rotate
+                windowSurface.blit(playerImage, playerRect)         # Print the player normal image
+            elif rotation == "Right":                               # If the player rotate right
+                windowSurface.blit(playerImageRight, playerRect)    # Print the player right image
+            if rotation == "Left":                                  # If the player rotate left
+                windowSurface.blit(playerImageLeft, playerRect)     # Print the player left image
 
             # Draw each baddie.
             for b in baddies:
@@ -140,7 +154,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
                 if lives <= 0:  # If no lives left.
                     playerRect.topleft = (-10000, -10000)  # Move player off-screen.
                     if score > topScore:  # If the score beats the top score.
-                        topScore = score  # Update the top score.
+                        topScore = score+1  # Update the top score.
 
             mainClock.tick(FPS)  # Control the frame rate.
 
