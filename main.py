@@ -120,7 +120,7 @@ while waiting:                                              # Loop until the pla
     windowSurface.blit(backgroundImage, (0, 0))             # Display the background image
 
     # Display start game message
-    drawText("Pressez ENTER pour lancer le jeu", font, windowSurface, windowSurface.get_width() // 2 - 400, windowSurface.get_height() // 2)  # Render the start message in the center of the screen
+    drawText("Pressez ENTER pour lancer le jeu", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Pressez ENTER pour lancer le jeu")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
 
     # Display the rules button
     drawButton(windowSurface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules

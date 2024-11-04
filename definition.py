@@ -146,7 +146,7 @@ def showCharacterSelectionMenu(windowSurface, characterImage, font, playerRect):
 
             windowSurface.blit(characterImage[i], (100 + i * 150, 200)) # Blit character image
 
-        drawText('Click on a character to select', font, windowSurface, 100, 400) # Display instructions
+        drawText('Click on a character to select', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Click on a character to select")[0] // 2), 400) # Display instructions
 
         drawButton(windowSurface, quitButtonRect, 'Quitter', (255, 100, 100), (255, 150, 150)) # Draw Quit button
 
@@ -262,8 +262,8 @@ def show_game_over_menu(windowSurface, score, font):    # Function to show the g
                     start()                                        # Go back to main menu
 
         windowSurface.fill((255, 255, 255))                       # Fill the window with white
-        drawText('Game Over', font, windowSurface, 350, 50)       # Draw Game Over text
-        drawText(f'Your Score: {score}', font, windowSurface, 350, 100) # Draw score text
+        drawText('Game Over', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Game Over")[0] // 2), 50)       # Draw Game Over text
+        drawText(f'Your Score: {score}', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Your Score:     ")[0] // 2), 100) # Draw score text
         drawButton(windowSurface, playAgainButton, 'Play Again', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw Play Again button
         drawButton(windowSurface, quitButton, 'Quit', QUITBUTTONCOLOR, QUITBUTTONHOVERCOLOR) # Draw Quit button
         drawButton(windowSurface, returnMenuButtonRect, 'Retour au menu', (100, 255, 100), (150, 255, 150)) # Draw return button

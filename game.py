@@ -88,7 +88,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
             windowSurface.blit(backgroundImage, (0, 0))  # Draw background image at the top left.
 
             # Draw the score and top score.
-            drawText('Score: %s' % (score), font, windowSurface, 800, 0)  # Draw current score.
+            drawText('Score: %s' % (score), font, windowSurface, 700, 0)  # Draw current score.
             drawText('Top Score: %s' % (topScore), font, windowSurface, 10, 0)  # Draw top score.
             draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)  # Display lives.
             windowSurface.blit(playerImage, playerRect)  # Draw the player's rectangle.
@@ -151,8 +151,8 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
 
         # Draw game over information.
         draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=True)  # Show lives.
-        drawText('GAME OVER', font, windowSurface, (WINDOWWIDTH / 3), (WINDOWHEIGHT / 3))  # Display game over message.
-        drawText('Press a key to play again.', font, windowSurface, (WINDOWWIDTH / 3) - 80, (WINDOWHEIGHT / 3) + 50)  # Prompt for replay.
+        drawText('GAME OVER', font, windowSurface, windowSurface.get_width() // 2  - (font.size("GAME OVER")[0] // 2), (WINDOWHEIGHT / 3))  # Display game over message.
+        drawText('Press a key to play again.', font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press a key to play again.")[0] // 2), (WINDOWHEIGHT / 3) + 50)  # Prompt for replay.
 
         pygame.display.update()  # Update display after drawing.
 
