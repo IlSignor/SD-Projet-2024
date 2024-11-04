@@ -73,8 +73,8 @@ healthItems = []                                # List to hold health items.
 explosions = []                                 # List to hold explosions.
 
 # Set up sounds.
-gameOverSound = pygame.mixer.Sound('gameover.wav')  # Load game over sound.
-pygame.mixer.music.load('background.mid')      # Load background music.
+gameOverSound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
+pygame.mixer.music.load('sounds/background.mid')      # Load background music.
 
 # Set up images.
 characterImages = [                             # List of character images.

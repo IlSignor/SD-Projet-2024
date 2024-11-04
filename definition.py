@@ -52,11 +52,15 @@ def drawButton(windowSurface, buttonRect, text, color, hoverColor): # Function t
 
 #################################       Explosions and bullets defintions         #############################################
 
-def trigger_explosion(explosions, position):     # Function to trigger an explosion
-    explosions.append(Explosion(position))        # Add explosion at the specified position
+def trigger_explosion(explosions, position):       # Function to trigger an explosion
+    explosion_sound = pygame.mixer.Sound('sounds/explosion.mp3')            # Add explosion sound
+    explosion_sound.play()
+    explosions.append(Explosion(position))         # Add explosion at the specified position
 
 def shoot(playerRect, bullets):                    # Function to shoot a bullet
     bullet = pygame.Rect(playerRect.centerx - 2, playerRect.top - 10, 5, 10) # Create a bullet
+    shots_sound = pygame.mixer.Sound('sounds/laser_shot.mp3')             # Add explosion sound
+    shots_sound.play()
     bullets.append(bullet)                         # Add bullet to the list
 
 def move_bullets(bullets):                         # Function to move bullets
@@ -100,10 +104,12 @@ def move_health_items(healthItems):              # Function to move health items
             healthItems.remove(item)               # Remove health item if it goes out
 
 def check_health_item_collision(playerRect, healthItems, lives, heal_animation):    #  Function if a player grab a health item
+    heal_sound = pygame.mixer.Sound("sounds/heal.mp3")                    # Load heal sound
     for item in healthItems[:]:                                    # Iterate through health items
         if playerRect.colliderect(item['rect']):                  # Check for collision with player
             if lives < 3:                                          # Check if player has less than maximum lives
                 lives += 1                                         # Increase lives by 1
+                heal_sound.play()                                              # Play heal sound
                 heal_animation = HealAnimation(playerRect.center)  # Create a new heal animation at player's center
             healthItems.remove(item)                               # Remove the health item after collision
   
