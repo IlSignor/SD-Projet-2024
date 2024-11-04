@@ -30,10 +30,10 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
                     if event.key == K_LEFT or event.key == K_a:  # Move left.
                         moveRight = False
                         moveLeft = True
-                        rotation = "Left"                         # The player rotate left
+                        
                     if event.key == K_RIGHT or event.key == K_d:  # Move right.
                         moveLeft = False
-                        rotation = "Right"                         # The player rotate right
+                        moveRight = True
 
                     if event.key == K_SPACE:  # Shoot when space is pressed.
                         shoot(playerRect, bullets) 
@@ -68,10 +68,10 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
             # Move the player around based on input.
             if moveLeft and playerRect.left > 0:  # Move left if within bounds.
                 playerRect.move_ip(-1 * PLAYERMOVERATE, 0)  # Move player left.
-                windowSurface.blit(playerImage, playerRect)
+                rotation = "Left"                         # The player rotate left
             if moveRight and playerRect.right < WINDOWWIDTH:  # Move right if within bounds.
                 playerRect.move_ip(PLAYERMOVERATE, 0)  # Move player right.
-                windowSurface.blit(playerImage, playerRect)
+                rotation = "Right"                         # The player rotate right
 
             # Move the baddies down the screen.
             for b in baddies:

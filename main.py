@@ -104,9 +104,9 @@ characterImagesLeft = [                             # List of character images f
 ]
 
 baddieImage = pygame.image.load('baddie.png')                      # Load baddie image.
-healthItemImage = pygame.image.load('cherry.png')                  # Load health item image.
+healthItemImage = pygame.transform.scale(pygame.image.load('cherry.png').convert(),(20,20))    # Load heal image.
 
-backgroundImage = pygame.image.load('background.jpg').convert()    # Load background image.
+backgroundImage = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
 
 RulesRect = pygame.Rect(0, 0, 50, 50)                               # Create a rectangle for the help button with width and height of 50
 RulesRect.topright = (windowSurface.get_width() - 20, 20)           # Position the button in the top-right corner with a 20-pixel margin

@@ -123,7 +123,7 @@ def showCharacterSelectionMenu(windowSurface, characterImage, font, playerRect):
     quitButtonRect = pygame.Rect(400, 500, 200, 50)                    # Define the Quit button rectangle
 
     while True:
-        backgroundImage = pygame.image.load('background.jpg').convert()  # Load background image
+        backgroundImage = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))  # Load background image
         windowSurface.blit(backgroundImage, (0, 0))                     # Blit background to window surface
         borderOffset = 15                                                  # Offset for centering the border around the image
 
