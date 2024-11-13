@@ -96,8 +96,8 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, win
             banner = pygame.Surface((1000, 50))                     # Create a surface with 1000X50 pixels for the banner
             banner.fill((255, 255, 255))                            # Fill the banner
             windowSurface.blit(banner, (0, 0))                      # Draw the banner
-            drawText('Score: %s' % (score), smallFont, windowSurface, 750, 10)  # Draw current score.
-            drawText('Top Score: %s' % (topScore), smallFont, windowSurface, 10, 10)  # Draw top score.
+            draw_text('Score: %s' % (score), smallFont, windowSurface, 750, 10)  # Draw current score.
+            draw_text('Top Score: %s' % (topScore), smallFont, windowSurface, 10, 10)  # Draw top score.
             draw_lives(windowSurface, lives, smallPlayerImage, smallPlayerImageGray, isGameOver=False)  # Display lives.
             
             if rotation == "None":                                  # If the player doesn't rotate

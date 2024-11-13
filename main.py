@@ -14,15 +14,15 @@ def start():                                      # Function to start the game.
     topScore = 0                                  # Initialize top score.
 
     # Show character selection menu.
-    playerFirstRect = pygame.transform.scale(characterImages[0], (40, 40)).get_rect()  # Get rectangle for first character image.
+    playerFirstRect = pygame.transform.scale(characterImagesSelection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
     
-    selectedCharacterIndex = showCharacterSelectionMenu(windowSurface, characterImages, font, playerFirstRect)  # Display character selection.
+    selectedCharacterIndex = show_character_selection_menu(windowSurface, characterImagesSelection, font, playerFirstRect)  # Display character selection.
     playerImage = pygame.transform.scale(characterImages[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
     playerImageRight = pygame.transform.scale(characterImagesRight[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
     playerImageLeft = pygame.transform.scale(characterImagesLeft[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
     playerRect = playerImage.get_rect()            # Get the rectangle for the player.
     
-    smallPlayerImage = pygame.transform.scale(playerImage, (30, 30))  # Scale down player image for display.
+    smallPlayerImage = pygame.transform.scale(characterImagesSelection[selectedCharacterIndex] , (30, 30))  # Scale down player image for display.
     smallPlayerImageGray = pygame.Surface((30, 30))  # Create a surface for the gray version.
     smallPlayerImageGray.blit(smallPlayerImage, (0, 0))  # Copy small player image to gray surface.
     smallPlayerImageGray.set_alpha(100)              # Set transparency for gray image.
@@ -31,7 +31,7 @@ def start():                                      # Function to start the game.
     heal_animation = HealAnimation(playerRect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
-    difficulty = showDifficultyMenu(windowSurface, font)  # Show difficulty menu.
+    difficulty = show_difficulty_menu(windowSurface, font)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
         BADDIEMINSPEED = 1                            # Set minimum baddie speed.
         BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
@@ -76,7 +76,15 @@ explosions = []                                 # List to hold explosions.
 gameOverSound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
 pygame.mixer.music.load('sounds/background.mid')      # Load background music.
 
-# Set up images.
+# Set up images.                            
+characterImagesSelection = [                    # List of character images for the selection menu
+    pygame.image.load('playersselection/player1.png'),
+    pygame.image.load('playersselection/player2.png'),
+    pygame.image.load('playersselection/player3.png'),
+    pygame.image.load('playersselection/player4.png'),
+    pygame.image.load('playersselection/player5.png'),
+    pygame.image.load('playersselection/player6.png') 
+]
 characterImages = [                             # List of character images.
     pygame.image.load('players/player1.png'),
     pygame.image.load('players/player2.png'),
@@ -127,7 +135,7 @@ rule_window = pygame.Surface((800, 360))                    # Create a surface w
 rule_window.fill((255, 255, 255))                           # Fill the rules window with a background color (white)
 y_offset = 40                                               # Set initial vertical offset for displaying text within the rules window
 for line in rules_text:                                     # Loop through each rule in the rules list
-    drawText(line, smallFont, rule_window, 20, y_offset)    # Use drawText function to render each rule line
+    draw_text(line, smallFont, rule_window, 20, y_offset)    # Use draw_text function to render each rule line
     y_offset += 40                                          # Increment vertical offset for the next line of text
 
 # Control variables
@@ -139,11 +147,11 @@ while waiting:                                              # Loop until the pla
     windowSurface.blit(backgroundImage, (0, 0))             # Display the background image
 
     # Display start game message
-    drawText("Welcome to the Space Shooter", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), windowSurface.get_height() // 2 - 100) 
-    drawText("Press ENTER to start the game", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
+    draw_text("Welcome to the Space Shooter", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), windowSurface.get_height() // 2 - 100) 
+    draw_text("Press ENTER to start the game", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
 
     # Display the rules button
-    drawButton(windowSurface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
+    draw_button(windowSurface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
 
     # If the rules should be shown, display the rules window
     if showing_rules:                                                       # Check if the rules window is active
