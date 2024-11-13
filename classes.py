@@ -1,4 +1,4 @@
-#importations of the modulu
+#importations of the modulus
 import pygame
 from pygame.locals import *
 

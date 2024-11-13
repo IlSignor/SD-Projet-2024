@@ -7,35 +7,35 @@ from definition import*
 
 def start():                                      # Function to start the game.
     # Show the "Start" screen.
-    windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
+    window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
     
     pygame.display.update()                       # Update the display.
 
-    topScore = 0                                  # Initialize top score.
+    top_score = 0                                  # Initialize top score.
 
     # Show character selection menu.
-    playerFirstRect = pygame.transform.scale(characterImagesSelection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
+    player_first_rect = pygame.transform.scale(character_images_selection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
     
-    selectedCharacterIndex = show_character_selection_menu(windowSurface, characterImagesSelection, font, playerFirstRect)  # Display character selection.
-    playerImage = pygame.transform.scale(characterImages[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
-    playerImageRight = pygame.transform.scale(characterImagesRight[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
-    playerImageLeft = pygame.transform.scale(characterImagesLeft[selectedCharacterIndex], (40, 40))  # Set player image based on selection.
-    playerRect = playerImage.get_rect()            # Get the rectangle for the player.
+    selected_character_index = show_character_selection_menu(window_surface, character_images_selection, font, player_first_rect)  # Display character selection.
+    player_image = pygame.transform.scale(character_images[selected_character_index], (40, 40))  # Set player image based on selection.
+    player_image_right = pygame.transform.scale(character_image_right[selected_character_index], (40, 40))  # Set player image based on selection.
+    player_image_left = pygame.transform.scale(character_image_left[selected_character_index], (40, 40))  # Set player image based on selection.
+    player_rect = player_image.get_rect()            # Get the rectangle for the player.
     
-    smallPlayerImage = pygame.transform.scale(characterImagesSelection[selectedCharacterIndex] , (30, 30))  # Scale down player image for display.
-    smallPlayerImageGray = pygame.Surface((30, 30))  # Create a surface for the gray version.
-    smallPlayerImageGray.blit(smallPlayerImage, (0, 0))  # Copy small player image to gray surface.
-    smallPlayerImageGray.set_alpha(100)              # Set transparency for gray image.
+    small_player_image = pygame.transform.scale(character_images_selection[selected_character_index] , (30, 30))  # Scale down player image for display.
+    small_player_image_gray = pygame.Surface((30, 30))  # Create a surface for the gray version.
+    small_player_image_gray.blit(small_player_image, (0, 0))  # Copy small player image to gray surface.
+    small_player_image_gray.set_alpha(100)              # Set transparency for gray image.
 
-    windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
-    heal_animation = HealAnimation(playerRect.center)  # Create healing animation object.
+    window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
+    heal_animation = HealAnimation(player_rect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
-    difficulty = show_difficulty_menu(windowSurface, font)  # Show difficulty menu.
+    difficulty = show_difficulty_menu(window_surface, font)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
         BADDIEMINSPEED = 1                            # Set minimum baddie speed.
         BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
-        ADDNEWBADDIERATE = 12                         # Set rate of adding new baddies.
+        ADDNEWBADDIERATE = 12                      # Set rate of adding new baddies.
         HEALTHHAPPEND = 100                           # Set health item appearance rate.
     elif difficulty == 'medium':                      # If difficulty is medium:
         BADDIEMINSPEED = 2                            # Set minimum baddie speed.
@@ -48,16 +48,16 @@ def start():                                      # Function to start the game.
         ADDNEWBADDIERATE = 6                          # Set rate of adding new baddies.
         HEALTHHAPPEND = 10000                         # Set health item appearance rate.
 
-    windowSurface.blit(backgroundImage, (0, 0))  # Display background image at the top left.
+    window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, heal_animation, fire_animation, playerRect, bullets, windowSurface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddieImage, healthItems, healthItemImage, backgroundImage, font, smallFont, smallPlayerImage, smallPlayerImageGray, playerImage, playerImageLeft, playerImageRight, explosions, gameOverSound, topScore)
+    game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score)
 
 #################################       Initialization and starting of the game         #############################################
 
 pygame.init()                                   # Initialize Pygame.
 
-windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Set up the window size.
+window_surface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))  # Set up the window size.
 
 pygame.display.set_caption('Space Shooter')            # Set the window title.
 
@@ -66,18 +66,18 @@ pygame.font.init()
 # Initialize font module.
 font_path = "SpaceAge.ttf"                       # Load the font path.
 font = pygame.font.Font(font_path, 40)           # Load the main font.
-smallFont = pygame.font.Font(font_path, 30)      # Load a smaller font.
+small_font = pygame.font.Font(font_path, 30)      # Load a smaller font.
 
 bullets = []                                    # List to hold bullets.
-healthItems = []                                # List to hold health items.
+health_items = []                                # List to hold health items.
 explosions = []                                 # List to hold explosions.
 
 # Set up sounds.
-gameOverSound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
+game_over_sound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
 pygame.mixer.music.load('sounds/background.mid')      # Load background music.
 
 # Set up images.                            
-characterImagesSelection = [                    # List of character images for the selection menu
+character_images_selection = [                    # List of character images for the selection menu
     pygame.image.load('playersselection/player1.png'),
     pygame.image.load('playersselection/player2.png'),
     pygame.image.load('playersselection/player3.png'),
@@ -85,7 +85,7 @@ characterImagesSelection = [                    # List of character images for t
     pygame.image.load('playersselection/player5.png'),
     pygame.image.load('playersselection/player6.png') 
 ]
-characterImages = [                             # List of character images.
+character_images = [                             # List of character images.
     pygame.image.load('players/player1.png'),
     pygame.image.load('players/player2.png'),
     pygame.image.load('players/player3.png'),
@@ -93,7 +93,7 @@ characterImages = [                             # List of character images.
     pygame.image.load('players/player5.png'),
     pygame.image.load('players/player6.png')
 ]
-characterImagesRight = [                             # List of character images for right rotations.
+character_image_right = [                             # List of character images for right rotations.
     pygame.image.load('playersright/player1.png'),
     pygame.image.load('playersright/player2.png'),
     pygame.image.load('playersright/player3.png'),
@@ -102,7 +102,7 @@ characterImagesRight = [                             # List of character images 
     pygame.image.load('playersright/player6.png')
 ]
 
-characterImagesLeft = [                             # List of character images for left rotations.
+character_image_left = [                             # List of character images for left rotations.
     pygame.image.load('playersleft/player1.png'),
     pygame.image.load('playersleft/player2.png'),
     pygame.image.load('playersleft/player3.png'),
@@ -111,13 +111,13 @@ characterImagesLeft = [                             # List of character images f
     pygame.image.load('playersleft/player6.png')
 ]
 
-baddieImage = pygame.image.load('baddie.png')                      # Load baddie image.
-healthItemImage = pygame.transform.scale(pygame.image.load('cherry.png').convert(),(20,20))    # Load heal image.
+baddie_image = pygame.image.load('baddie.png')                      # Load baddie image.
+health_item_image = pygame.transform.scale(pygame.image.load('cherry.png').convert(),(20,20))    # Load heal image.
 
-backgroundImage = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
+background_image = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
 
 RulesRect = pygame.Rect(0, 0, 50, 50)                               # Create a rectangle for the help button with width and height of 50
-RulesRect.topright = (windowSurface.get_width() - 20, 20)           # Position the button in the top-right corner with a 20-pixel margin
+RulesRect.topright = (window_surface.get_width() - 20, 20)           # Position the button in the top-right corner with a 20-pixel margin
 
 # Game rules text
 rules_text = [                                              # List of rules for the game
@@ -135,7 +135,7 @@ rule_window = pygame.Surface((800, 360))                    # Create a surface w
 rule_window.fill((255, 255, 255))                           # Fill the rules window with a background color (white)
 y_offset = 40                                               # Set initial vertical offset for displaying text within the rules window
 for line in rules_text:                                     # Loop through each rule in the rules list
-    draw_text(line, smallFont, rule_window, 20, y_offset)    # Use draw_text function to render each rule line
+    draw_text(line, small_font, rule_window, 20, y_offset)    # Use draw_text function to render each rule line
     y_offset += 40                                          # Increment vertical offset for the next line of text
 
 # Control variables
@@ -144,18 +144,18 @@ waiting = True                                              # Flag to keep the s
 
 # Main loop for the start menu
 while waiting:                                              # Loop until the player decides to start the game
-    windowSurface.blit(backgroundImage, (0, 0))             # Display the background image
+    window_surface.blit(background_image, (0, 0))             # Display the background image
 
     # Display start game message
-    draw_text("Welcome to the Space Shooter", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), windowSurface.get_height() // 2 - 100) 
-    draw_text("Press ENTER to start the game", font, windowSurface, windowSurface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), windowSurface.get_height() // 2)  # Render the start message in the center of the screen
+    draw_text("Welcome to the Space Shooter", font, window_surface, window_surface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), window_surface.get_height() // 2 - 100) 
+    draw_text("Press ENTER to start the game", font, window_surface, window_surface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), window_surface.get_height() // 2)  # Render the start message in the center of the screen
 
     # Display the rules button
-    draw_button(windowSurface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
+    draw_button(window_surface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
 
     # If the rules should be shown, display the rules window
     if showing_rules:                                                       # Check if the rules window is active
-        windowSurface.blit(rule_window, (100, 220))                         # Display the rules window at position (100, 100)
+        window_surface.blit(rule_window, (100, 220))                         # Display the rules window at position (100, 100)
 
     pygame.display.update()                                                 # Update the display to show all drawn elements
 
