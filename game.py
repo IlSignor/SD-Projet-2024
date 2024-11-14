@@ -3,6 +3,25 @@ import pygame, random
 from pygame.locals import *
 from definition import*
 
+# Configuration of the window size
+WINDOWWIDTH = 1000
+WINDOWHEIGHT = 800
+
+# Configuration of the colors
+TEXTCOLOR = (255, 255, 255)
+BUTTONTEXTCOLOR = (0, 0, 0)
+BUTTONCOLOR = (0, 120, 200) 
+BUTTONOVERCOLOR = (150, 220, 255)
+QUITBUTTONCOLOR = (215, 0, 0)
+QUITBUTTONOVERCOLOR = (255, 150, 150)
+
+# Configuration of the baddies size, player movement speed, FPS and clock to control the frame rate
+BADDIEMINSIZE = 10
+BADDIEMAXSIZE = 40
+PLAYERMOVERATE = 5 
+FPS = 60
+main_clock = pygame.time.Clock()
+
 #################################       Game defintion         #############################################
 
 def game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,

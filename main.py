@@ -174,5 +174,4 @@ while waiting:                                              # Loop until the pla
             if RulesRect.collidepoint(event.pos):                   # Check if the click is within the rules button's rectangle
                 showing_rules = not showing_rules                   # Toggle the display of the rules window
 
-
 start()                                                             # Start the game.
