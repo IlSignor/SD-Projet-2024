@@ -28,7 +28,6 @@ def start():                                      # Function to start the game.
     small_player_image_gray.set_alpha(100)              # Set transparency for gray image.
 
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
-    heal_animation = HealAnimation(player_rect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
     difficulty = show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show difficulty menu.
@@ -51,7 +50,7 @@ def start():                                      # Function to start the game.
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
+    game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
          baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
          player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)
 

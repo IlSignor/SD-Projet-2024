@@ -5,7 +5,7 @@ from definition import*
 
 #################################       Game defintion         #############################################
 
-def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
+def game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
          baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
          player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):
     
@@ -171,4 +171,3 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, wi
         pygame.display.update()  # Update display after drawing.
 
         show_game_over_menu(window_surface, score, font, small_font, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show game over menu.
-
