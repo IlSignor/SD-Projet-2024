@@ -7,15 +7,20 @@ from classes import*
 WINDOWWIDTH = 1000
 WINDOWHEIGHT = 800
 
-TEXTCOLOR = (0, 0, 0)                           # Color for text
-BUTTONTEXTCOLOR = (255, 255, 255)               # Color for button text
+# Configuration of the colors
+TEXTCOLOR = (255, 255, 255)
+BUTTONTEXTCOLOR = (0, 0, 0)
+BUTTONCOLOR = (0, 120, 200) 
+BUTTONOVERCOLOR = (150, 220, 255)
+QUITBUTTONCOLOR = (215, 0, 0)
+QUITBUTTONOVERCOLOR = (255, 150, 150)
 
-BADDIEMINSIZE = 10                               # Minimum size for baddies
-BADDIEMAXSIZE = 40                               # Maximum size for baddies
-PLAYERMOVERATE = 5                               # Player movement speed
-
-FPS = 60                                         # Frames per second
-main_clock = pygame.time.Clock()                  # Clock for controlling the frame rate
+# Configuration of the baddies size, player movement speed, FPS and clock to control the frame rate
+BADDIEMINSIZE = 10
+BADDIEMAXSIZE = 40
+PLAYERMOVERATE = 5 
+FPS = 60
+main_clock = pygame.time.Clock()
 
 #################################       Basic defintions         #############################################
 
@@ -29,17 +34,17 @@ def draw_text(text, font, surface, x, y):         # Function to draw text on the
     text_rect.topleft = (x, y)                     # Set the position of the text
     surface.blit(text_obj, text_rect)               # Blit the text onto the surface
 
-def draw_button(window_surface, buttonRect, text, color, hoverColor): # Function to draw a button
+def draw_button(window_surface, button_rect, text, color, over_color): # Function to draw a button
     mouse_pos = pygame.mouse.get_pos()             # Get the position of the mouse
     # Change button color if mouse is over it
-    if buttonRect.collidepoint(mouse_pos):          # Check if mouse is over button
-        pygame.draw.rect(window_surface, hoverColor, buttonRect, border_radius=10) # Draw hover color
+    if button_rect.collidepoint(mouse_pos):          # Check if mouse is over button
+        pygame.draw.rect(window_surface, over_color, button_rect, border_radius=20) # Draw hover color
     else:
-        pygame.draw.rect(window_surface, color, buttonRect, border_radius=10) # Draw normal color
+        pygame.draw.rect(window_surface, color, button_rect, border_radius=20) # Draw normal color
     font_path = "SpaceAge.ttf"
     buttonFont = pygame.font.Font(font_path, 40)     # Define button font
     textSurf = buttonFont.render(text, True, BUTTONTEXTCOLOR) # Render button text
-    text_rect = textSurf.get_rect(center=buttonRect.center) # Get text rect centered in button
+    text_rect = textSurf.get_rect(center=button_rect.center) # Get text rect centered in button
     window_surface.blit(textSurf, text_rect)          # Blit the text onto the button
 
 #################################       Explosions and bullets defintions         #############################################
@@ -85,10 +90,6 @@ def draw_lives(surface, lives, small_player_image, small_player_image_gray, is_g
             else:                                  # If player is out of life
                 surface.blit(small_player_image_gray, (455 + i * 45, 10)) # Draw gray image
 
-def clear_lives_area(surface, background_image):   # Function to clear the lives area
-    lives_area = pygame.Rect(500, 10, 3 * 45, 30) # Define the lives area
-    surface.blit(background_image, (500, 10), lives_area) # Clear the lives area
-
 def move_health_items(health_items):              # Function to move health items
     for item in health_items[:]:                   # Iterate through health items
         item['rect'].y += item['speed']           # Move health item down
@@ -115,7 +116,7 @@ def playerHashit_baddie(player_rect, baddies):     # Function to check if player
 
 #################################       Menu defintions         #############################################
 
-def show_character_selection_menu(window_surface, character_image, font, player_rect):    
+def show_character_selection_menu(window_surface, character_image, font, player_rect, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):    
     num_characters = len(character_image)                # Get the number of characters in the character_image list
     quit_buttonRect = pygame.Rect(400, 680, 200, 50)  # Define the quit button rectangle
 
@@ -145,7 +146,7 @@ def show_character_selection_menu(window_surface, character_image, font, player_
             window_surface.blit(pygame.transform.scale(character_image[i], (220, 220)), (player_x, player_y))  # Blit the character image at the calculated position
 
         draw_text('Click on a player to select', font, window_surface, window_surface.get_width() // 2 - (font.size("Click on a player to select")[0] // 2), 600)  # Display instruction text at the top center
-        draw_button(window_surface, quit_buttonRect, 'Quit', (255, 100, 100), (255, 150, 150))  # Draw the Quit button
+        draw_button(window_surface, quit_buttonRect, 'Quit', QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Draw the Quit button
 
         pygame.display.update()           # Update the window surface to reflect the changes
 
@@ -165,11 +166,7 @@ def show_character_selection_menu(window_surface, character_image, font, player_
                                        
                                   
 
-def show_difficulty_menu(window_surface, font):    # Function to show the difficulty menu
-    BUTTONCOLOR = (100, 200, 255)                 # Color for buttons
-    BUTTONHOVERCOLOR = (150, 220, 255)            # Hover color for buttons
-    QUITBUTTONCOLOR = (255, 100, 100)             # Color for quit button
-    QUITBUTTONHOOVERCOLOR = (255, 150, 150)        # Hover color for quit button
+def show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):    # Function to show the difficulty menu
 
     easy_button = pygame.Rect(100, 200, 200, 50)   # Define easy button
     medium_button = pygame.Rect(400, 200, 200, 50)  # Define medium button
@@ -196,11 +193,11 @@ def show_difficulty_menu(window_surface, font):    # Function to show the diffic
                     start()                        # Go back to main menu
 
         # Draw buttons
-        draw_button(window_surface, easy_button, 'Easy', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw easy button
-        draw_button(window_surface, medium_button, 'Normal', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw medium button
-        draw_button(window_surface, hard_button, 'Difficult', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw hard button
-        draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw return button
-        draw_button(window_surface, quit_button, 'Quit', QUITBUTTONCOLOR, QUITBUTTONHOOVERCOLOR) # Draw quit button
+        draw_button(window_surface, easy_button, 'Easy', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw easy button
+        draw_button(window_surface, medium_button, 'Normal', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw medium button
+        draw_button(window_surface, hard_button, 'Difficult', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw hard button
+        draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw return button
+        draw_button(window_surface, quit_button, 'Quit', QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR) # Draw quit button
         
 
         draw_text('Choose the difficulty level', font, window_surface, window_surface.get_width() // 2  - (font.size("Choose the difficulty level")[0] // 2), 400) #   Draw the text of the menu
@@ -208,7 +205,7 @@ def show_difficulty_menu(window_surface, font):    # Function to show the diffic
         pygame.display.update()                    # Update display
         main_clock.tick(FPS)                        # Control frame rate
 
-def pause_menu(window_surface, font):                      # Function to show the pause menu
+def pause_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):                      # Function to show the pause menu
     return_menu_button_rect = pygame.Rect(400, 500, 200, 50) # Define return menu button
     quit_buttonRect = pygame.Rect(400, 600, 200, 50)       # Define Quit button rectangle
 
@@ -222,8 +219,8 @@ def pause_menu(window_surface, font):                      # Function to show th
         draw_text('Paused', font, window_surface, window_surface.get_width() // 2  - (font.size("Paused")[0] // 2), 300) # Draw pause text
         draw_text('Press ESC to resume', font, window_surface, window_surface.get_width() // 2  - (font.size("Press ESC to resume")[0] // 2), 400) # Draw resume instruction
 
-        draw_button(window_surface, return_menu_button_rect, 'Menu', (100, 200, 255), (150, 220, 255)) # Draw return menu button
-        draw_button(window_surface, quit_buttonRect, 'Quit', (255, 100, 100), (255, 150, 150)) # Draw Quit button
+        draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw return menu button
+        draw_button(window_surface, quit_buttonRect, 'Quit', QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR) # Draw Quit button
 
         
         pygame.display.update()                                     # Update display
@@ -241,11 +238,7 @@ def pause_menu(window_surface, font):                      # Function to show th
                     from main import start                            # Import start function from main
                     start()                                         # Go back to main menu
 
-def show_game_over_menu(window_surface, score, font, small_font, top_score):    # Function to show the game over screen
-    BUTTONCOLOR = (100, 200, 255)                                 # Color for buttons
-    BUTTONHOVERCOLOR = (150, 220, 255)                            # Hover color for buttons
-    QUITBUTTONCOLOR = (255, 100, 100)                             # Color for quit button
-    QUITBUTTONHOOVERCOLOR = (255, 150, 150)                        # Hover color for quit button
+def show_game_over_menu(window_surface, score, font, small_font, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):    # Function to show the game over screen
 
     play_again_button = pygame.Rect(350, 400, 300, 50)             # Define Play Again button rectangle
     return_menu_button_rect = pygame.Rect(400, 500, 200, 50)        # Define return menu button
@@ -273,9 +266,9 @@ def show_game_over_menu(window_surface, score, font, small_font, top_score):    
         draw_text('Game Over!', font, window_surface, window_surface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 150)       # Draw Game Over text
         draw_text(f'Your Score: {score}', small_font, window_surface, window_surface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 200) # Draw score text
         draw_text('Top Score: %s' % (top_score), small_font, window_surface, window_surface.get_width() // 2  - (font.size("Game Over!")[0] // 2), 250)  # Draw top score.
-        draw_button(window_surface, play_again_button, 'Play Again', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw Play Again button
-        draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONHOVERCOLOR) # Draw return button
-        draw_button(window_surface, quit_button, 'Quit', QUITBUTTONCOLOR, QUITBUTTONHOOVERCOLOR) # Draw Quit button
+        draw_button(window_surface, play_again_button, 'Play Again', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw Play Again button
+        draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw return button
+        draw_button(window_surface, quit_button, 'Quit', QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR) # Draw Quit button
 
 
         pygame.display.update()                                    # Update display

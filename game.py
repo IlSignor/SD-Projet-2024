@@ -5,7 +5,10 @@ from definition import*
 
 #################################       Game defintion         #############################################
 
-def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score):
+def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
+         baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
+         player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):
+    
     while True:                            # Main game loop
         # Initialize game variables.
         baddies = []                       # List to hold baddie objects.
@@ -38,7 +41,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, wi
                     if event.key == K_SPACE:  # Shoot when space is pressed.
                         shoot(player_rect, bullets) 
                     if event.key == K_ESCAPE:  # Open pause menu.
-                        pause_menu(window_surface, font)
+                        pause_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)
 
                 if event.type == KEYUP:     # Key released event.
                     rotation = "None"  # The player doesn't rotate
@@ -94,7 +97,7 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, wi
 
             # Draw the score and top score.
             banner = pygame.Surface((1000, 50))                     # Create a surface with 1000X50 pixels for the banner
-            banner.fill((255, 255, 255))                            # Fill the banner
+            banner.fill((0, 0, 0))                            # Fill the banner
             window_surface.blit(banner, (0, 0))                      # Draw the banner
             draw_text('Score: %s' % (score), small_font, window_surface, 750, 10)  # Draw current score.
             draw_text('Top Score: %s' % (top_score), small_font, window_surface, 10, 10)  # Draw top score.
@@ -161,12 +164,11 @@ def game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, wi
         # Stop the game and show the "Game Over" screen.
         pygame.mixer.music.stop()  # Stop the background music.
         game_over_sound.play()  # Play game over sound.
-        clear_lives_area(window_surface, background_image)  # Clear the area showing lives.
 
         # Draw game over information.
         draw_lives(window_surface, lives, small_player_image, small_player_image_gray, is_game_over=True)  # Show lives.
 
         pygame.display.update()  # Update display after drawing.
 
-        show_game_over_menu(window_surface, score, font, small_font, top_score)  # Show game over menu.
+        show_game_over_menu(window_surface, score, font, small_font, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show game over menu.
 

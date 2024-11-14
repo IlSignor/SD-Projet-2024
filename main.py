@@ -16,7 +16,7 @@ def start():                                      # Function to start the game.
     # Show character selection menu.
     player_first_rect = pygame.transform.scale(character_images_selection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
     
-    selected_character_index = show_character_selection_menu(window_surface, character_images_selection, font, player_first_rect)  # Display character selection.
+    selected_character_index = show_character_selection_menu(window_surface, character_images_selection, font, player_first_rect, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Display character selection.
     player_image = pygame.transform.scale(character_images[selected_character_index], (40, 40))  # Set player image based on selection.
     player_image_right = pygame.transform.scale(character_image_right[selected_character_index], (40, 40))  # Set player image based on selection.
     player_image_left = pygame.transform.scale(character_image_left[selected_character_index], (40, 40))  # Set player image based on selection.
@@ -31,7 +31,7 @@ def start():                                      # Function to start the game.
     heal_animation = HealAnimation(player_rect.center)  # Create healing animation object.
     fire_animation = FireAnimation()                    # Create fire animation object.
 
-    difficulty = show_difficulty_menu(window_surface, font)  # Show difficulty menu.
+    difficulty = show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
         BADDIEMINSPEED = 1                            # Set minimum baddie speed.
         BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
@@ -51,7 +51,9 @@ def start():                                      # Function to start the game.
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED, baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score)
+    game(HEALTHHAPPEND, heal_animation, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
+         baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
+         player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)
 
 #################################       Initialization and starting of the game         #############################################
 
@@ -132,7 +134,7 @@ rules_text = [                                              # List of rules for 
 
 # Surface for the rules window
 rule_window = pygame.Surface((800, 360))                    # Create a surface with 800X360 pixels for the rules window
-rule_window.fill((255, 255, 255))                           # Fill the rules window with a background color (white)
+rule_window.fill((0, 0, 0))                           # Fill the rules window with a background color (white)
 y_offset = 40                                               # Set initial vertical offset for displaying text within the rules window
 for line in rules_text:                                     # Loop through each rule in the rules list
     draw_text(line, small_font, rule_window, 20, y_offset)    # Use draw_text function to render each rule line
@@ -151,7 +153,7 @@ while waiting:                                              # Loop until the pla
     draw_text("Press ENTER to start the game", font, window_surface, window_surface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), window_surface.get_height() // 2)  # Render the start message in the center of the screen
 
     # Display the rules button
-    draw_button(window_surface, RulesRect, '?', (0, 0, 0), (100, 100, 100))  # Draw the "?" button to access the rules
+    draw_button(window_surface, RulesRect, '?', BUTTONCOLOR, BUTTONOVERCOLOR)  # Draw the "?" button to access the rules
 
     # If the rules should be shown, display the rules window
     if showing_rules:                                                       # Check if the rules window is active
