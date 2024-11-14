@@ -4,13 +4,6 @@ from pygame.locals import *
 from definition import*
 
 #################################       Game defintion         #############################################
-# Configuration of the colors
-TEXTCOLOR = (255, 255, 255)
-BUTTONTEXTCOLOR = (0, 0, 0)
-BUTTONCOLOR = (0, 120, 200) 
-BUTTONOVERCOLOR = (150, 220, 255)
-QUITBUTTONCOLOR = (215, 0, 0)
-QUITBUTTONOVERCOLOR = (255, 150, 150)
 
 def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
         HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
@@ -26,29 +19,29 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
     while True:                            # Main game loop
         # Initialize game variables.
         baddies = []                       # List to hold baddie objects.
-        bullets = []                                    # List to hold bullets.
-        health_items = []                                # List to hold health items.
-        explosions = []                                 # List to hold explosions.
+        bullets = []                       # List to hold bullets.
+        health_items = []                  # List to hold health items.
+        explosions = []                    # List to hold explosions.
         score = 0                          # Player's score.
-        top_score = 0                                  # Initialize top score.
+        top_score = 0                      # Initialize top score.
         lives = 3                          # Player's lives.
-        heal_animation = None               # Healing animation.
-        rotation = "None"                   # The player doesn't rotate
-        fire_animation = FireAnimation()                    # Create fire animation object.
+        heal_animation = None              # Healing animation.
+        rotation = "None"                  # The player doesn't rotate
+        fire_animation = FireAnimation()   # Create fire animation object.
 
         # Set player position at the bottom center of the window.
         player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
-        move_left = move_right = False       # Movement flags for player.
-        baddie_add_counter = 0                # Counter to control baddie spawning.
+        move_left = move_right = False     # Movement flags for player.
+        baddie_add_counter = 0             # Counter to control baddie spawning.
         pygame.mixer.music.play(-1, 0.0)   # Play background music in a loop.
 
-        while True:                        # The game loop runs while the game is active.
-            score += 1                     # Increment score.
+        while True:                           # The game loop runs while the game is active.
+            score += 1                        # Increment score.
             for event in pygame.event.get():  # Event handling.
                 if event.type == QUIT:
-                    terminate()              # Close the game.
+                    terminate()               # Close the game.
 
-                if event.type == KEYDOWN:  # Key pressed event.
+                if event.type == KEYDOWN:     # Key pressed event.
                     if event.key == K_LEFT or event.key == K_a:  # Move left.
                         move_right = False
                         move_left = True

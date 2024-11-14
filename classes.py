@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *
 
+
 # Class to manage the fire animation beneath the player's character and the baddies
 class FireAnimation:
     def __init__(self):
@@ -35,7 +36,6 @@ class FireAnimation:
         surface.blit(self.frames[self.index], self.rect)                               # Draw the current frame on the given surface
   
   
-  
 # Class to manage explosion animations
 class Explosion:
     def __init__(self, position):
@@ -65,7 +65,6 @@ class Explosion:
     def draw(self, surface):
         if not self.finished:
             surface.blit(self.frames[self.index], self.rect)                           # Draw the current frame on the given surface
-
 
 
 # Class to manage the healing animation displayed above the player's character

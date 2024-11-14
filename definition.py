@@ -269,6 +269,5 @@ def show_game_over_menu(window_surface, score, font, small_font, top_score, BUTT
         draw_button(window_surface, return_menu_button_rect, 'Menu', BUTTONCOLOR, BUTTONOVERCOLOR) # Draw return button
         draw_button(window_surface, quit_button, 'Quit', QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR) # Draw Quit button
 
-
         pygame.display.update()                                    # Update display
         main_clock.tick(FPS)                                        # Control frame rate
