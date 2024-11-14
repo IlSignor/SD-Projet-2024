@@ -11,8 +11,6 @@ def start():                                      # Function to start the game.
     
     pygame.display.update()                       # Update the display.
 
-    top_score = 0                                  # Initialize top score.
-
     # Show character selection menu.
     player_first_rect = pygame.transform.scale(character_images_selection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
     
@@ -50,9 +48,12 @@ def start():                                      # Function to start the game.
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
-    game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
-         baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
-         player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)
+    game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
+        HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
+        baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
+        small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
+        player_rect, window_surface,                                                                                            # Surfaces management
+        font, small_font)                                                                                                       # font management
 
 #################################       Initialization and starting of the game         #############################################
 
@@ -68,14 +69,6 @@ pygame.font.init()
 font_path = "SpaceAge.ttf"                       # Load the font path.
 font = pygame.font.Font(font_path, 40)           # Load the main font.
 small_font = pygame.font.Font(font_path, 30)      # Load a smaller font.
-
-bullets = []                                    # List to hold bullets.
-health_items = []                                # List to hold health items.
-explosions = []                                 # List to hold explosions.
-
-# Set up sounds.
-game_over_sound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
-pygame.mixer.music.load('sounds/background.mid')      # Load background music.
 
 # Set up images.                            
 character_images_selection = [                    # List of character images for the selection menu

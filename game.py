@@ -3,10 +3,7 @@ import pygame, random
 from pygame.locals import *
 from definition import*
 
-# Configuration of the window size
-WINDOWWIDTH = 1000
-WINDOWHEIGHT = 800
-
+#################################       Game defintion         #############################################
 # Configuration of the colors
 TEXTCOLOR = (255, 255, 255)
 BUTTONTEXTCOLOR = (0, 0, 0)
@@ -15,26 +12,29 @@ BUTTONOVERCOLOR = (150, 220, 255)
 QUITBUTTONCOLOR = (215, 0, 0)
 QUITBUTTONOVERCOLOR = (255, 150, 150)
 
-# Configuration of the baddies size, player movement speed, FPS and clock to control the frame rate
-BADDIEMINSIZE = 10
-BADDIEMAXSIZE = 40
-PLAYERMOVERATE = 5 
-FPS = 60
-main_clock = pygame.time.Clock()
-
-#################################       Game defintion         #############################################
-
-def game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,
-         baddie_image, health_items, health_item_image, background_image, font, small_font, small_player_image, small_player_image_gray,
-         player_image, player_image_left, player_image_right, explosions, game_over_sound, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR):
+def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
+        HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
+        baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
+        small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
+        player_rect, window_surface,                                                                                            # Surfaces management
+        font, small_font):                                                                                                      # font management
+           
     
+    game_over_sound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
+    pygame.mixer.music.load('sounds/background.mid')      # Load background music.
+
     while True:                            # Main game loop
         # Initialize game variables.
         baddies = []                       # List to hold baddie objects.
+        bullets = []                                    # List to hold bullets.
+        health_items = []                                # List to hold health items.
+        explosions = []                                 # List to hold explosions.
         score = 0                          # Player's score.
+        top_score = 0                                  # Initialize top score.
         lives = 3                          # Player's lives.
         heal_animation = None               # Healing animation.
         rotation = "None"                   # The player doesn't rotate
+        fire_animation = FireAnimation()                    # Create fire animation object.
 
         # Set player position at the bottom center of the window.
         player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
@@ -73,7 +73,7 @@ def game(HEALTHHAPPEND, fire_animation, player_rect, bullets, window_surface, AD
             baddie_add_counter += 1              # Increment counter for baddie spawning.
             if baddie_add_counter == ADDNEWBADDIERATE:  # Check if it's time to add a new baddie.
                 baddie_add_counter = 0            # Reset the counter.
-                baddie_size = random.randint(BADDIEMINSIZE, BADDIEMAXSIZE)  # Randomize baddie size.
+                baddie_size = random.randint(10, 40)  # Randomize baddie size.
                 # Create a new baddie object.
                 new_baddie = {
                     'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddie_size), 100 - baddie_size, baddie_size, baddie_size),

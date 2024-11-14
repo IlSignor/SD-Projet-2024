@@ -16,8 +16,7 @@ QUITBUTTONCOLOR = (215, 0, 0)
 QUITBUTTONOVERCOLOR = (255, 150, 150)
 
 # Configuration of the baddies size, player movement speed, FPS and clock to control the frame rate
-BADDIEMINSIZE = 10
-BADDIEMAXSIZE = 40
+
 PLAYERMOVERATE = 5 
 FPS = 60
 main_clock = pygame.time.Clock()
