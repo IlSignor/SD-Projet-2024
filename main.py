@@ -26,7 +26,6 @@ def start():                                      # Function to start the game.
     small_player_image_gray.set_alpha(100)              # Set transparency for gray image.
 
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
-    fire_animation = FireAnimation()                    # Create fire animation object.
 
     difficulty = show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
@@ -53,7 +52,7 @@ def start():                                      # Function to start the game.
         baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
-        font, small_font)                                                                                                       # font management
+        font, small_font, top_score)                                                                                                       # font management
 
 #################################       Initialization and starting of the game         #############################################
 

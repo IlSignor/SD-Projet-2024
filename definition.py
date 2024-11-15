@@ -20,6 +20,7 @@ QUITBUTTONOVERCOLOR = (255, 150, 150)
 PLAYERMOVERATE = 5 
 FPS = 60
 main_clock = pygame.time.Clock()
+top_score = 0
 
 #################################       Basic defintions         #############################################
 

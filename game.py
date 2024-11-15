@@ -5,12 +5,13 @@ from definition import*
 
 #################################       Game defintion         #############################################
 
+
 def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
         HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
         baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
-        font, small_font):                                                                                                      # font management
+        font, small_font, top_score):                                                                                                      # font management
            
     
     game_over_sound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
@@ -23,7 +24,6 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
         health_items = []                  # List to hold health items.
         explosions = []                    # List to hold explosions.
         score = 0                          # Player's score.
-        top_score = 0                      # Initialize top score.
         lives = 3                          # Player's lives.
         heal_animation = None              # Healing animation.
         rotation = "None"                  # The player doesn't rotate
