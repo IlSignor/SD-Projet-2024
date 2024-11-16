@@ -66,7 +66,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
             baddie_add_counter += 1              # Increment counter for baddie spawning.
             if baddie_add_counter == ADDNEWBADDIERATE:  # Check if it's time to add a new baddie.
                 baddie_add_counter = 0            # Reset the counter.
-                baddie_size = random.randint(15, 55)  # Randomize baddie size.
+                baddie_size = random.randint(20, 60)  # Randomize baddie size.
                 # Create a new baddie object.
                 new_baddie = {
                     'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddie_size), 100 - baddie_size, baddie_size, baddie_size),

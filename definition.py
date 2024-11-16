@@ -71,14 +71,14 @@ def check_bullet_hits(baddies,baddie_image, explosions, score, bullets): # Funct
         for bullet in bullets[:]:                                    # Iterate through bullets
             if bullet.colliderect(baddie['rect']):                   # Check for collision
                 trigger_explosion(explosions, baddie['rect'].center) # Trigger explosion
-                if 40 < baddie['rect'].width <= 55:                  # If the baddie is "size 3"
-                    baddie_new_size = random.randint(26, 40)         # Creates a new smaller size for the baddie
+                if 45 < baddie['rect'].width <= 60:                  # If the baddie is "size 3"
+                    baddie_new_size = random.randint(31, 45)         # Creates a new smaller size for the baddie
                     baddie['rect'].width = baddie_new_size           # Makes the baddie smaller
                     baddie['rect'].height = baddie_new_size          # Makes the baddie smaller
                     baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
                     
-                elif 25 < baddie['rect'].width <= 40:                 # If the baddie is "size 2"
-                    baddie_new_size = random.randint(15, 25)          # Creates a new smaller size for the baddie
+                elif 30 < baddie['rect'].width <= 45:                 # If the baddie is "size 2"
+                    baddie_new_size = random.randint(20, 30)          # Creates a new smaller size for the baddie
                     baddie['rect'].width = baddie_new_size            # Makes the baddie smaller
                     baddie['rect'].height = baddie_new_size           # Makes the baddie smaller
                     baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
