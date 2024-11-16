@@ -15,7 +15,7 @@ BUTTONOVERCOLOR = (150, 220, 255)
 QUITBUTTONCOLOR = (215, 0, 0)
 QUITBUTTONOVERCOLOR = (255, 150, 150)
 
-# Configuration of the baddies size, player movement speed, FPS and clock to control the frame rate
+# Configuration of the comets size, player movement speed, FPS and clock to control the frame rate
 
 PLAYERMOVERATE = 5 
 FPS = 60
@@ -66,25 +66,25 @@ def move_bullets(bullets):                         # Function to move bullets
         if bullet.bottom < 100:                      # Check if bullet is out of screen
             bullets.remove(bullet)                 # Remove bullet if it goes out
 
-def check_bullet_hits(baddies,baddie_image, explosions, score, bullets): # Function to check bullet hits
-    for baddie in baddies[:]:                                        # Iterate through baddies
+def check_bullet_hits(comets,comet_image, explosions, score, bullets): # Function to check bullet hits
+    for comet in comets[:]:                                        # Iterate through comets
         for bullet in bullets[:]:                                    # Iterate through bullets
-            if bullet.colliderect(baddie['rect']):                   # Check for collision
-                trigger_explosion(explosions, baddie['rect'].center) # Trigger explosion
-                if 45 < baddie['rect'].width <= 60:                  # If the baddie is "size 3"
-                    baddie_new_size = random.randint(31, 45)         # Creates a new smaller size for the baddie
-                    baddie['rect'].width = baddie_new_size           # Makes the baddie smaller
-                    baddie['rect'].height = baddie_new_size          # Makes the baddie smaller
-                    baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
+            if bullet.colliderect(comet['rect']):                   # Check for collision
+                trigger_explosion(explosions, comet['rect'].center) # Trigger explosion
+                if 45 < comet['rect'].width <= 60:                  # If the comet is "size 3"
+                    comet_new_size = random.randint(31, 45)         # Creates a new smaller size for the comet
+                    comet['rect'].width = comet_new_size           # Makes the comet smaller
+                    comet['rect'].height = comet_new_size          # Makes the comet smaller
+                    comet['surface'] = pygame.transform.scale(comet_image, (comet_new_size, comet_new_size))  # Makes the comet smaller
                     
-                elif 30 < baddie['rect'].width <= 45:                 # If the baddie is "size 2"
-                    baddie_new_size = random.randint(20, 30)          # Creates a new smaller size for the baddie
-                    baddie['rect'].width = baddie_new_size            # Makes the baddie smaller
-                    baddie['rect'].height = baddie_new_size           # Makes the baddie smaller
-                    baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
+                elif 30 < comet['rect'].width <= 45:                 # If the comet is "size 2"
+                    comet_new_size = random.randint(20, 30)          # Creates a new smaller size for the comet
+                    comet['rect'].width = comet_new_size            # Makes the comet smaller
+                    comet['rect'].height = comet_new_size           # Makes the comet smaller
+                    comet['surface'] = pygame.transform.scale(comet_image, (comet_new_size, comet_new_size))  # Makes the comet smaller
                     
                 else:                              # Else
-                    baddies.remove(baddie)         # Remove baddie if hit
+                    comets.remove(comet)         # Remove comet if hit
                     score += 250                   # Update score
                 bullets.remove(bullet)             # Remove bullet
                 break                              # Break out of bullet loop
@@ -120,10 +120,10 @@ def check_health_item_collision(player_rect, health_items, lives, heal_animation
   
     return lives, heal_animation                                    # Return updated lives and heal animation
 
-def playerHashit_baddie(player_rect, baddies):     # Function to check if player has hit a baddie
-    for b in baddies:                             # Iterate through baddies
+def playerHashit_comet(player_rect, comets):     # Function to check if player has hit a comet
+    for b in comets:                             # Iterate through comets
         if player_rect.colliderect(b['rect']):    # Check for collision
-            return b                              # Return the baddie if hit
+            return b                              # Return the comet if hit
     return None                                   # Return None if no hit
 
 #################################       Menu defintions         #############################################

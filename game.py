@@ -7,8 +7,8 @@ from definition import*
 
 
 def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
-        HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
-        baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
+        HEALTHHAPPEND, ADDNEWcometRATE, cometMINSPEED, cometMAXSPEED,                                                        # comet and health constants
+        comet_image, health_item_image, background_image,                                                                      # comet, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
         font, small_font, top_score):                                                                                                      # font management
@@ -19,7 +19,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
 
     while True:                            # Main game loop
         # Initialize game variables.
-        baddies = []                       # List to hold baddie objects.
+        comets = []                       # List to hold comet objects.
         bullets = []                       # List to hold bullets.
         health_items = []                  # List to hold health items.
         explosions = []                    # List to hold explosions.
@@ -32,7 +32,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
         # Set player position at the bottom center of the window.
         player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 150)
         move_left = move_right = False     # Movement flags for player.
-        baddie_add_counter = 0             # Counter to control baddie spawning.
+        comet_add_counter = 0             # Counter to control comet spawning.
         pygame.mixer.music.play(-1, 0.0)   # Play background music in a loop.
 
         while True:                           # The game loop runs while the game is active.
@@ -62,22 +62,22 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
                     if event.key == K_RIGHT or event.key == K_d:
                         move_right = False
 
-            # Add new baddies at the top of the screen, if needed.
-            baddie_add_counter += 1              # Increment counter for baddie spawning.
-            if baddie_add_counter == ADDNEWBADDIERATE:  # Check if it's time to add a new baddie.
-                baddie_add_counter = 0            # Reset the counter.
-                baddie_size = random.randint(20, 60)  # Randomize baddie size.
-                # Create a new baddie object.
-                new_baddie = {
-                    'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddie_size), 100 - baddie_size, baddie_size, baddie_size),
-                    'speed': random.randint(BADDIEMINSPEED, BADDIEMAXSPEED),
-                    'surface': pygame.transform.scale(baddie_image, (baddie_size, baddie_size)),
+            # Add new comets at the top of the screen, if needed.
+            comet_add_counter += 1              # Increment counter for comet spawning.
+            if comet_add_counter == ADDNEWcometRATE:  # Check if it's time to add a new comet.
+                comet_add_counter = 0            # Reset the counter.
+                comet_size = random.randint(20, 60)  # Randomize comet size.
+                # Create a new comet object.
+                new_comet = {
+                    'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - comet_size), 100 - comet_size, comet_size, comet_size),
+                    'speed': random.randint(cometMINSPEED, cometMAXSPEED),
+                    'surface': pygame.transform.scale(comet_image, (comet_size, comet_size)),
                 }
-                baddies.append(new_baddie)      # Add the new baddie to the list.
+                comets.append(new_comet)      # Add the new comet to the list.
 
             # Randomly spawn health items.
             if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% chance to spawn health item.
-                item_rect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 100, 30, 30)  # Create item rectangle.
+                item_rect = pygame.Rect(random.randint(0, WINDOWWIDTH - 30), 30, 30, 30)  # Create item rectangle.
                 health_items.append({'rect': item_rect, 'speed': random.randint(2, 5)})  # Add to health items list.
 
             # Move the player around based on input.
@@ -88,9 +88,9 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
                 player_rect.move_ip(PLAYERMOVERATE, 0)  # Move player right.
                 rotation = "Right"                         # The player rotate right
 
-            # Move the baddies down the screen.
-            for b in baddies:
-                b['rect'].move_ip(0, b['speed'])  # Move each baddie down based on its speed.
+            # Move the comets down the screen.
+            for b in comets:
+                b['rect'].move_ip(0, b['speed'])  # Move each comet down based on its speed.
                 
             # Move health items down the screen.
             move_health_items(health_items)
@@ -99,10 +99,10 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
             for item in health_items:
                 window_surface.blit(health_item_image, item['rect'])  # Draw health item.
 
-            # Delete baddies that have fallen past the bottom.
-            for b in baddies[:]:
-                if b['rect'].top > WINDOWHEIGHT:  # If baddie is off screen.
-                    baddies.remove(b)              # Remove it from the list.
+            # Delete comets that have fallen past the bottom.
+            for b in comets[:]:
+                if b['rect'].top > WINDOWHEIGHT:  # If comet is off screen.
+                    comets.remove(b)              # Remove it from the list.
 
             # Draw the game world on the window.
             window_surface.blit(background_image, (0, 0))  # Draw background image at the top left.
@@ -122,12 +122,12 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
             if rotation == "Left":                                  # If the player rotate left
                 window_surface.blit(player_image_left, player_rect)     # Print the player left image
 
-            # Draw each baddie.
-            for b in baddies:
-                window_surface.blit(b['surface'], b['rect'])  # Draw baddie.
+            # Draw each comet.
+            for b in comets:
+                window_surface.blit(b['surface'], b['rect'])  # Draw comet.
 
             move_bullets(bullets)  # Move the bullets.
-            score = check_bullet_hits(baddies,baddie_image, explosions, score, bullets)  # Check for bullet hits.
+            score = check_bullet_hits(comets,comet_image, explosions, score, bullets)  # Check for bullet hits.
 
             fire_animation.update()  # Update fire animation.
             fire_animation.draw(window_surface, player_rect)  # Draw fire animation on player.
@@ -157,15 +157,15 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
             
             pygame.display.update()  # Update the display.
 
-            hit_baddie = playerHashit_baddie(player_rect, baddies)  # Check for collision with baddies.
+            hit_comet = playerHashit_comet(player_rect, comets)  # Check for collision with comets.
 
             if player_rect.topleft < (0, 0):  # Check if player is off screen.
                 break  # End the game loop.
             
-            if hit_baddie:  # If a collision has occurred.
+            if hit_comet:  # If a collision has occurred.
                 lives -= 1  # Decrease lives.
-                trigger_explosion(explosions, hit_baddie['rect'].center)  # Trigger explosion at collision point.
-                baddies.remove(hit_baddie)  # Remove the hit baddie.
+                trigger_explosion(explosions, hit_comet['rect'].center)  # Trigger explosion at collision point.
+                comets.remove(hit_comet)  # Remove the hit comet.
                 if lives <= 0:  # If no lives left.
                     player_rect.topleft = (-10000, -10000)  # Move player off-screen.
                     if score > top_score:  # If the score beats the top score.

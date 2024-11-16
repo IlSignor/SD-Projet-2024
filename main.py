@@ -29,27 +29,27 @@ def start():                                      # Function to start the game.
 
     difficulty = show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
-        BADDIEMINSPEED = 1                            # Set minimum baddie speed.
-        BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
-        ADDNEWBADDIERATE = 12                         # Set rate of adding new baddies.
+        cometMINSPEED = 1                            # Set minimum comet speed.
+        cometMAXSPEED = 4                            # Set maximum comet speed.
+        ADDNEWcometRATE = 12                         # Set rate of adding new comets.
         HEALTHHAPPEND = 100                           # Set health item appearance rate.
     elif difficulty == 'medium':                      # If difficulty is medium:
-        BADDIEMINSPEED = 2                            # Set minimum baddie speed.
-        BADDIEMAXSPEED = 6                            # Set maximum baddie speed.
-        ADDNEWBADDIERATE = 8                          # Set rate of adding new baddies.
+        cometMINSPEED = 2                            # Set minimum comet speed.
+        cometMAXSPEED = 6                            # Set maximum comet speed.
+        ADDNEWcometRATE = 8                          # Set rate of adding new comets.
         HEALTHHAPPEND = 1000                          # Set health item appearance rate.
     elif difficulty == 'hard':                        # If difficulty is hard:
-        BADDIEMINSPEED = 4                            # Set minimum baddie speed.
-        BADDIEMAXSPEED = 8                            # Set maximum baddie speed.
-        ADDNEWBADDIERATE = 6                          # Set rate of adding new baddies.
+        cometMINSPEED = 4                            # Set minimum comet speed.
+        cometMAXSPEED = 8                            # Set maximum comet speed.
+        ADDNEWcometRATE = 6                          # Set rate of adding new comets.
         HEALTHHAPPEND = 10000                         # Set health item appearance rate.
 
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
     game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
-        HEALTHHAPPEND, ADDNEWBADDIERATE, BADDIEMINSPEED, BADDIEMAXSPEED,                                                        # Baddie and health constants
-        baddie_image, health_item_image, background_image,                                                                      # Baddie, health and background images
+        HEALTHHAPPEND, ADDNEWcometRATE, cometMINSPEED, cometMAXSPEED,                                                        # comet and health constants
+        comet_image, health_item_image, background_image,                                                                      # comet, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
         font, small_font, top_score)                                                                                                       # font management
@@ -91,8 +91,8 @@ character_image_right = pygame.image.load('players/playersleft.png')            
 
 character_image_left = pygame.image.load('players/playersright.png')                             # Character image for left rotations.
 
-baddie_image = pygame.image.load('baddie.png')                      # Load baddie image.
-health_item_image = pygame.transform.scale(pygame.image.load('cherry.png').convert(),(20,20))    # Load heal image.
+comet_image = pygame.image.load('comet.png')                      # Load comet image.
+health_item_image = pygame.transform.scale(pygame.image.load('live.png'),(25,25))    # Load heal image.
 
 background_image = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
 

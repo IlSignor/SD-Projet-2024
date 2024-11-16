@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 
 
-# Class to manage the fire animation beneath the player's character and the baddies
+# Class to manage the fire animation beneath the player's character and the comets
 class FireAnimation:
     def __init__(self):
         self.sprite_sheet = pygame.image.load('animations/rocket_fire.png').convert_alpha()      # Load the sprite sheet image for the fire effect
