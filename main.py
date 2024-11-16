@@ -96,7 +96,7 @@ health_item_image = pygame.transform.scale(pygame.image.load('live.png'),(25,25)
 
 background_image = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
 
-background_start = pygame.transform.scale(pygame.image.load('background_start.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
+background_start = pygame.transform.scale(pygame.image.load('background_start.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background start image.
 
 RulesRect = pygame.Rect(0, 0, 50, 50)                               # Create a rectangle for the help button with width and height of 50
 RulesRect.topright = (window_surface.get_width() - 20, 20)           # Position the button in the top-right corner with a 20-pixel margin

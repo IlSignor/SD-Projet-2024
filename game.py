@@ -11,7 +11,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
         comet_image, health_item_image, background_image,                                                                      # comet, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
-        font, small_font, top_score):                                                                                                      # font management
+        font, small_font, top_score):                                                                                           # font management
            
     
     game_over_sound = pygame.mixer.Sound('sounds/gameover.mp3')  # Load game over sound.
