@@ -30,7 +30,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
         fire_animation = FireAnimation()   # Create fire animation object.
 
         # Set player position at the bottom center of the window.
-        player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 120)
+        player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 150)
         move_left = move_right = False     # Movement flags for player.
         baddie_add_counter = 0             # Counter to control baddie spawning.
         pygame.mixer.music.play(-1, 0.0)   # Play background music in a loop.
@@ -182,4 +182,4 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
 
         pygame.display.update()  # Update display after drawing.
 
-        show_game_over_menu(window_surface, score, font, small_font, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show game over menu.
+        show_game_over_menu(window_surface, score, font, small_font, top_score, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR, game_over_sound)  # Show game over menu.

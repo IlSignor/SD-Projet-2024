@@ -15,13 +15,13 @@ def start():                                      # Function to start the game.
     player_first_rect = pygame.transform.scale(character_images_selection[0], (100, 100)).get_rect()  # Get rectangle for first character image.
     
     selected_character_index = show_character_selection_menu(window_surface, character_images_selection, font, player_first_rect, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Display character selection.
-    player_image = pygame.transform.scale(character_images[selected_character_index], (40, 40))  # Set player image based on selection.
-    player_image_right = pygame.transform.scale(character_image_right[selected_character_index], (40, 40))  # Set player image based on selection.
-    player_image_left = pygame.transform.scale(character_image_left[selected_character_index], (40, 40))  # Set player image based on selection.
-    player_rect = player_image.get_rect()            # Get the rectangle for the player.
+    player_image = pygame.transform.scale(character_images[selected_character_index], (80, 120))  # Set player image based on selection.
+    player_image_right = pygame.transform.scale(character_image_right, (60, 120))  # Set player image based on selection.
+    player_image_left = pygame.transform.scale(character_image_left, (60, 120))  # Set player image based on selection.
+    player_rect = (player_image.get_rect())            # Get the rectangle for the player.
     
-    small_player_image = pygame.transform.scale(character_images_selection[selected_character_index] , (30, 30))  # Scale down player image for display.
-    small_player_image_gray = pygame.Surface((30, 30))  # Create a surface for the gray version.
+    small_player_image = pygame.transform.scale(character_images_selection[selected_character_index] , (18, 30))  # Scale down player image for display.
+    small_player_image_gray = pygame.Surface((18, 30))  # Create a surface for the gray version.
     small_player_image_gray.blit(small_player_image, (0, 0))  # Copy small player image to gray surface.
     small_player_image_gray.set_alpha(100)              # Set transparency for gray image.
 
@@ -86,23 +86,10 @@ character_images = [                             # List of character images.
     pygame.image.load('players/player5.png'),
     pygame.image.load('players/player6.png')
 ]
-character_image_right = [                             # List of character images for right rotations.
-    pygame.image.load('playersright/player1.png'),
-    pygame.image.load('playersright/player2.png'),
-    pygame.image.load('playersright/player3.png'),
-    pygame.image.load('playersright/player4.png'),
-    pygame.image.load('playersright/player5.png'),
-    pygame.image.load('playersright/player6.png')
-]
 
-character_image_left = [                             # List of character images for left rotations.
-    pygame.image.load('playersleft/player1.png'),
-    pygame.image.load('playersleft/player2.png'),
-    pygame.image.load('playersleft/player3.png'),
-    pygame.image.load('playersleft/player4.png'),
-    pygame.image.load('playersleft/player5.png'),
-    pygame.image.load('playersleft/player6.png')
-]
+character_image_right = pygame.image.load('players/playersleft.png')                            # Character image for right rotations.
+
+character_image_left = pygame.image.load('players/playersright.png')                             # Character image for left rotations.
 
 baddie_image = pygame.image.load('baddie.png')                      # Load baddie image.
 health_item_image = pygame.transform.scale(pygame.image.load('cherry.png').convert(),(20,20))    # Load heal image.
