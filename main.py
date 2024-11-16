@@ -96,6 +96,8 @@ health_item_image = pygame.transform.scale(pygame.image.load('live.png'),(25,25)
 
 background_image = pygame.transform.scale(pygame.image.load('background.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
 
+background_start = pygame.transform.scale(pygame.image.load('background_start.jpg').convert(),(WINDOWWIDTH, WINDOWHEIGHT))    # Load background image.
+
 RulesRect = pygame.Rect(0, 0, 50, 50)                               # Create a rectangle for the help button with width and height of 50
 RulesRect.topright = (window_surface.get_width() - 20, 20)           # Position the button in the top-right corner with a 20-pixel margin
 
@@ -124,11 +126,11 @@ waiting = True                                              # Flag to keep the s
 
 # Main loop for the start menu
 while waiting:                                              # Loop until the player decides to start the game
-    window_surface.blit(background_image, (0, 0))             # Display the background image
+    window_surface.blit(background_start, (0, 0))             # Display the background image
 
     # Display start game message
-    draw_text("Welcome to the Space Shooter", font, window_surface, window_surface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), window_surface.get_height() // 2 - 100) 
-    draw_text("Press ENTER to start the game", font, window_surface, window_surface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), window_surface.get_height() // 2)  # Render the start message in the center of the screen
+    draw_text("Welcome to the Space Shooter", font, window_surface, window_surface.get_width() // 2  - (font.size("Welcome to the Space Shooter")[0] // 2), window_surface.get_height() // 2 + 180) 
+    draw_text("Press ENTER to start the game", font, window_surface, window_surface.get_width() // 2  - (font.size("Press ENTER to start the game")[0] // 2), window_surface.get_height() // 2 + 270)  # Render the start message in the center of the screen
 
     # Display the rules button
     draw_button(window_surface, RulesRect, '?', BUTTONCOLOR, BUTTONOVERCOLOR)  # Draw the "?" button to access the rules
