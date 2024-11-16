@@ -66,7 +66,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
             baddie_add_counter += 1              # Increment counter for baddie spawning.
             if baddie_add_counter == ADDNEWBADDIERATE:  # Check if it's time to add a new baddie.
                 baddie_add_counter = 0            # Reset the counter.
-                baddie_size = random.randint(10, 40)  # Randomize baddie size.
+                baddie_size = random.randint(15, 55)  # Randomize baddie size.
                 # Create a new baddie object.
                 new_baddie = {
                     'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - baddie_size), 100 - baddie_size, baddie_size, baddie_size),
@@ -127,7 +127,7 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
                 window_surface.blit(b['surface'], b['rect'])  # Draw baddie.
 
             move_bullets(bullets)  # Move the bullets.
-            score = check_bullet_hits(baddies, explosions, score, bullets)  # Check for bullet hits.
+            score = check_bullet_hits(baddies,baddie_image, explosions, score, bullets)  # Check for bullet hits.
 
             fire_animation.update()  # Update fire animation.
             fire_animation.draw(window_surface, player_rect)  # Draw fire animation on player.

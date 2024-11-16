@@ -31,7 +31,7 @@ def start():                                      # Function to start the game.
     if difficulty == 'easy':                          # If difficulty is easy:
         BADDIEMINSPEED = 1                            # Set minimum baddie speed.
         BADDIEMAXSPEED = 4                            # Set maximum baddie speed.
-        ADDNEWBADDIERATE = 12                      # Set rate of adding new baddies.
+        ADDNEWBADDIERATE = 12                         # Set rate of adding new baddies.
         HEALTHHAPPEND = 100                           # Set health item appearance rate.
     elif difficulty == 'medium':                      # If difficulty is medium:
         BADDIEMINSPEED = 2                            # Set minimum baddie speed.

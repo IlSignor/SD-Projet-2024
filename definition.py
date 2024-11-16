@@ -1,5 +1,5 @@
 #importations of the modulus and files
-import pygame, sys
+import pygame, sys, random
 from pygame.locals import *
 from classes import*
 
@@ -66,12 +66,24 @@ def move_bullets(bullets):                         # Function to move bullets
         if bullet.bottom < 100:                      # Check if bullet is out of screen
             bullets.remove(bullet)                 # Remove bullet if it goes out
 
-def check_bullet_hits(baddies, explosions, score, bullets): # Function to check bullet hits
-    for baddie in baddies[:]:                     # Iterate through baddies
-        for bullet in bullets[:]:                  # Iterate through bullets
-            if bullet.colliderect(baddie['rect']): # Check for collision
+def check_bullet_hits(baddies,baddie_image, explosions, score, bullets): # Function to check bullet hits
+    for baddie in baddies[:]:                                        # Iterate through baddies
+        for bullet in bullets[:]:                                    # Iterate through bullets
+            if bullet.colliderect(baddie['rect']):                   # Check for collision
                 trigger_explosion(explosions, baddie['rect'].center) # Trigger explosion
-                if baddie['rect'].width <= 30 and baddie['rect'].height <= 30: # Check size
+                if 40 < baddie['rect'].width <= 55:                  # If the baddie is "size 3"
+                    baddie_new_size = random.randint(26, 40)         # Creates a new smaller size for the baddie
+                    baddie['rect'].width = baddie_new_size           # Makes the baddie smaller
+                    baddie['rect'].height = baddie_new_size          # Makes the baddie smaller
+                    baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
+                    
+                elif 25 < baddie['rect'].width <= 40:                 # If the baddie is "size 2"
+                    baddie_new_size = random.randint(15, 25)          # Creates a new smaller size for the baddie
+                    baddie['rect'].width = baddie_new_size            # Makes the baddie smaller
+                    baddie['rect'].height = baddie_new_size           # Makes the baddie smaller
+                    baddie['surface'] = pygame.transform.scale(baddie_image, (baddie_new_size, baddie_new_size))  # Makes the baddie smaller
+                    
+                else:                              # Else
                     baddies.remove(baddie)         # Remove baddie if hit
                     score += 250                   # Update score
                 bullets.remove(bullet)             # Remove bullet
