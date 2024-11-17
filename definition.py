@@ -153,7 +153,7 @@ def show_character_selection_menu(window_surface, character_image, font, player_
             if isMouseOver:                                         # If mouse is over the character, change the border color to yellow
                 borderColor = (0, 120, 200)                         # Blue border color
                 borderRect = player_rect.inflate(2 * borderOffset, 2 * borderOffset)  # Inflate the player_rect to create a border around the character
-                pygame.draw.rect(window_surface, borderColor, borderRect, 5)          # Draw the border around the character
+                pygame.draw.rect(window_surface, borderColor, borderRect, 5, 10)          # Draw the border around the character
 
             window_surface.blit(pygame.transform.scale(character_image[i], (130, 220)), (player_x, player_y))  # Blit the character image at the calculated position
 
