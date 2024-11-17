@@ -7,7 +7,7 @@ from definition import*
 
 
 def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
-        HEALTHHAPPEND, ADDNEWcometRATE, cometMINSPEED, cometMAXSPEED,                                                        # comet and health constants
+        HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED,                                                        # comet and health constants
         comet_image, health_item_image, background_image,                                                                      # comet, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
@@ -64,13 +64,13 @@ def game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,    
 
             # Add new comets at the top of the screen, if needed.
             comet_add_counter += 1              # Increment counter for comet spawning.
-            if comet_add_counter == ADDNEWcometRATE:  # Check if it's time to add a new comet.
+            if comet_add_counter == ADDNEWCOMETRATE:  # Check if it's time to add a new comet.
                 comet_add_counter = 0            # Reset the counter.
                 comet_size = random.randint(20, 60)  # Randomize comet size.
                 # Create a new comet object.
                 new_comet = {
                     'rect': pygame.Rect(random.randint(0, WINDOWWIDTH - comet_size), 100 - comet_size, comet_size, comet_size),
-                    'speed': random.randint(cometMINSPEED, cometMAXSPEED),
+                    'speed': random.randint(COMETMINSPEED, COMETMAXSPEED),
                     'surface': pygame.transform.scale(comet_image, (comet_size, comet_size)),
                 }
                 comets.append(new_comet)      # Add the new comet to the list.

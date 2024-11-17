@@ -29,26 +29,26 @@ def start():                                      # Function to start the game.
 
     difficulty = show_difficulty_menu(window_surface, font, BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR)  # Show difficulty menu.
     if difficulty == 'easy':                          # If difficulty is easy:
-        cometMINSPEED = 1                            # Set minimum comet speed.
-        cometMAXSPEED = 4                            # Set maximum comet speed.
-        ADDNEWcometRATE = 12                         # Set rate of adding new comets.
+        COMETMINSPEED = 1                            # Set minimum comet speed.
+        COMETMAXSPEED = 4                            # Set maximum comet speed.
+        ADDNEWCOMETRATE = 12                         # Set rate of adding new comets.
         HEALTHHAPPEND = 100                           # Set health item appearance rate.
     elif difficulty == 'medium':                      # If difficulty is medium:
-        cometMINSPEED = 2                            # Set minimum comet speed.
-        cometMAXSPEED = 6                            # Set maximum comet speed.
-        ADDNEWcometRATE = 8                          # Set rate of adding new comets.
+        COMETMINSPEED = 2                            # Set minimum comet speed.
+        COMETMAXSPEED = 6                            # Set maximum comet speed.
+        ADDNEWCOMETRATE = 8                          # Set rate of adding new comets.
         HEALTHHAPPEND = 1000                          # Set health item appearance rate.
     elif difficulty == 'hard':                        # If difficulty is hard:
-        cometMINSPEED = 4                            # Set minimum comet speed.
-        cometMAXSPEED = 8                            # Set maximum comet speed.
-        ADDNEWcometRATE = 6                          # Set rate of adding new comets.
+        COMETMINSPEED = 4                            # Set minimum comet speed.
+        COMETMAXSPEED = 8                            # Set maximum comet speed.
+        ADDNEWCOMETRATE = 6                          # Set rate of adding new comets.
         HEALTHHAPPEND = 10000                         # Set health item appearance rate.
 
     window_surface.blit(background_image, (0, 0))  # Display background image at the top left.
 
     from game import game                            # Import game function.
     game(BUTTONCOLOR, BUTTONOVERCOLOR, QUITBUTTONCOLOR, QUITBUTTONOVERCOLOR,                                                    # Button color constants
-        HEALTHHAPPEND, ADDNEWcometRATE, cometMINSPEED, cometMAXSPEED,                                                        # comet and health constants
+        HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED,                                                        # comet and health constants
         comet_image, health_item_image, background_image,                                                                      # comet, health and background images
         small_player_image, small_player_image_gray, player_image, player_image_left, player_image_right,                       # Player images management
         player_rect, window_surface,                                                                                            # Surfaces management
