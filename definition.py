@@ -143,7 +143,7 @@ def show_character_selection_menu(window_surface, character_image, font, player_
         player_rect = pygame.Rect(0, 0, 130, 220)  # Set player_rect to the size of each character image (130x220 pixels)
 
         for i in range(num_characters):      # Loop through each character to display it
-            player_x = 50 + (i // 2) * 350   # Calculate X position for each character, arranging them in two rows
+            player_x = 80 + (i // 2) * 350   # Calculate X position for each character, arranging them in two rows
             player_y = 50 + (i % 2) * 300    # Calculate Y position for each character, alternating between rows
 
             player_rect.topleft = (player_x, player_y)  # Update player_rect position for current character
@@ -151,7 +151,7 @@ def show_character_selection_menu(window_surface, character_image, font, player_
             isMouseOver = player_rect.collidepoint(mouseX, mouseY)  # Check if the mouse is over the current character's area
 
             if isMouseOver:                                         # If mouse is over the character, change the border color to yellow
-                borderColor = (255, 255, 0)                         # Yellow border color
+                borderColor = (0, 120, 200)                         # Blue border color
                 borderRect = player_rect.inflate(2 * borderOffset, 2 * borderOffset)  # Inflate the player_rect to create a border around the character
                 pygame.draw.rect(window_surface, borderColor, borderRect, 5)          # Draw the border around the character
 
