@@ -18,6 +18,7 @@ class FireAnimation:
         self.animation_speed = 5                                                       # Set the animation speed
         self.rect = self.frames[self.index].get_rect()                                 # Initialize the rect object for positioning
 
+
     def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
         frames = []
         for row in range(num_rows):                                                    # Loop through each row and column
@@ -46,6 +47,7 @@ class Explosion:
         self.index = 0                                                                 # Initialize frame index
         self.rect = self.frames[self.index].get_rect(center=position)                  # Set rect to position the explosion
         self.finished = False                                                          # Flag to indicate if the animation is complete
+
 
     def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
         frames = []
@@ -79,6 +81,7 @@ class HealAnimation:
         self.finished = False                                                          # Flag to indicate if the animation is complete
         self.animation_speed = 100                                                     # Duration (in milliseconds) between frames
         self.last_update_time = pygame.time.get_ticks()                                # Record the time of the last update
+
 
     def extract_frames(self, sprite_sheet, frame_width, frame_height, num_columns, num_rows):
         frames = []

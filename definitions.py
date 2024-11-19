@@ -28,6 +28,7 @@ class Basic:
         self.TEXTCOLOR = (255,255,255)
         self.BUTTONTEXTCOLOR = (0, 0, 0)
     
+    
     def terminate(self):                                  # Function to terminate the game
         pygame.quit()                                 # Quit Pygame
         sys.exit()                                    # Exit the program
@@ -54,12 +55,11 @@ basic = Basic()
 
 #################################       Explosions and bullets class         #############################################
 
-
-
 class ExplosionBullets:
     def __init__(self):
         self.explosion_sound = pygame.mixer.Sound('sounds/explosion.mp3')            # Add explosion sound
         self.shots_sound = pygame.mixer.Sound('sounds/laser_shot.mp3')             # Add explosion sound
+   
         
     def trigger_explosion(self,explosions, position):       # Function to trigger an explosion
         self.explosion_sound.play()
@@ -75,6 +75,14 @@ class ExplosionBullets:
             bullet.y -= 10                             # Move bullet up
             if bullet.bottom < 100:                      # Check if bullet is out of screen
                 bullets.remove(bullet)                 # Remove bullet if it goes out
+    
+    def move_aliens(self, aliens, player_rect):
+        for alien in aliens:
+            alien['rect'].move_ip(0, alien['speed'])
+            if alien['rect'].centerx < player_rect.centerx:
+                alien['rect'].move_ip(5, 0)
+            elif alien['rect'].centerx > player_rect.centerx:
+                alien['rect'].move_ip(-5, 0)
 
     def check_bullet_hits(self, comets,comet_image, explosions, score, bullets): # Function to check bullet hits
         for comet in comets[:]:                                        # Iterate through comets
@@ -99,6 +107,19 @@ class ExplosionBullets:
                     bullets.remove(bullet)             # Remove bullet
                     break                              # Break out of bullet loop
         return score                                   # Return updated score
+    
+    def check_alien_hits(self, aliens,explosions, bullets):
+        for alien in aliens:
+            for bullet in bullets:
+                if bullet.colliderect(alien['rect']):                   # Check for collision
+                    ExplosionBullets.trigger_explosion(self, explosions, (alien['rect'].centerx, alien['rect'].centery + 20)) # Trigger explosion
+                    alien['lives'] -= 1
+
+                    if alien['lives'] == 0:
+                        aliens.remove(alien)
+                
+                    bullets.remove(bullet)             # Remove bullet
+                    break                              # Break out of bullet loop
 
 #################################       Health and lives class         #############################################
 
@@ -108,8 +129,8 @@ class HealthLives:
 
         self.small_live_image = pygame.transform.scale(pygame.image.load(f'live.png'), (30, 30))  # Scale down player image for display.
         self.small_live_image_gray = pygame.Surface((30, 30))  # Create a surface for the gray version.
-
-        
+     
+     
     def draw_lives(self, lives, is_game_over): # Function to draw lives
         for i in range(3):                             # Loop for 3 lives
             if is_game_over:                             # If the game is over
@@ -138,7 +159,7 @@ class HealthLives:
     
         return lives, heal_animation                                    # Return updated lives and heal animation
 
-    def playerHashit_comet(self, player_rect, comets):     # Function to check if player has hit a comet
+    def player_hit_comet(self, player_rect, comets):     # Function to check if player has hit a comet
         for b in comets:                             # Iterate through comets
             if player_rect.colliderect(b['rect']):    # Check for collision
                 return b                              # Return the comet if hit
@@ -147,7 +168,6 @@ class HealthLives:
 #################################       Menu class         #############################################
 
 class ShowMenu:
-
     def __init__(self):
         # Initialisation de pygame et des paramètres de la fenêtre
                 

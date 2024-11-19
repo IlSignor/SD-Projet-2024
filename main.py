@@ -31,7 +31,7 @@ character_images = [                             # List of character images.
 character_image_right = pygame.image.load('players/playersleft.png')                            # Character image for right rotations.
 
 character_image_left = pygame.image.load('players/playersright.png')                             # Character image for left rotations.
-
+ 
 comet_image = pygame.image.load('comet.png')                      # Load comet image.
 health_item_image = pygame.transform.scale(pygame.image.load('live.png'),(25,25))    # Load heal image.
 

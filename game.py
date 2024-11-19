@@ -28,7 +28,6 @@ class SpaceShooterGame:
         self.player_rect = pygame.transform.scale(self.character_images_selection[0], (80, 120)).get_rect()
 
 
-
     def start(self):  # This is now a method inside the class
         # Show the "Start" screen.
         window_surface.blit(self.background_image, (0, 0))  # Display background image at the top left.
@@ -51,22 +50,25 @@ class SpaceShooterGame:
             COMETMAXSPEED = 4  # Set maximum comet speed.
             ADDNEWCOMETRATE = 12  # Set rate of adding new comets.
             HEALTHHAPPEND = 100  # Set health item appearance rate.
+            ALIENHAPPEND = 500
         elif difficulty == 'medium':  # If difficulty is medium:
             COMETMINSPEED = 2  # Set minimum comet speed.
             COMETMAXSPEED = 6  # Set maximum comet speed.
             ADDNEWCOMETRATE = 8  # Set rate of adding new comets.
             HEALTHHAPPEND = 1000  # Set health item appearance rate.
+            ALIENHAPPEND = 300
         elif difficulty == 'hard':  # If difficulty is hard:
             COMETMINSPEED = 4  # Set minimum comet speed.
             COMETMAXSPEED = 8  # Set maximum comet speed.
             ADDNEWCOMETRATE = 6  # Set rate of adding new comets.
             HEALTHHAPPEND = 10000  # Set health item appearance rate.
+            ALIENHAPPEND = 200          #200
 
         window_surface.blit(self.background_image, (0, 0))  # Display background image at the top left.
 
-        SpaceShooterGame.game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, player_image)                                                                             
+        SpaceShooterGame.game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image)                                                                             
  
-    def game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, player_image):
+    def game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image):
             
         health_lives = HealthLives()
         explosion_bullets = ExplosionBullets()
@@ -79,6 +81,7 @@ class SpaceShooterGame:
             PLAYERMOVERATE = 5 
             bullets = []                       # List to hold bullets.
             comets = []
+            aliens = []
             health_items = [] 
             explosions = []                    # List to hold explosions.
             score = 0                          # Player's score.
@@ -133,6 +136,19 @@ class SpaceShooterGame:
                         'surface': pygame.transform.scale(self.comet_image, (comet_size, comet_size)),
                     }
                     comets.append(new_comet)      # Add the new comet to the list.
+                
+                # Randomly spawn aliens
+                
+                if random.randint(1, ALIENHAPPEND) == 1:  # Adjust the spawn rate (1 in 200 chance per frame)
+                    alien_size = 50  # Fixed size for aliens
+                    new_alien = {
+                        'rect': pygame.Rect(self.player_rect.centerx-40, 100-alien_size, alien_size, alien_size),
+                        'speed': 5,  # Alien speed
+                        'surface': pygame.transform.scale(pygame.image.load('alien.png'), (alien_size, alien_size)),
+                        'lives': 3
+                    }
+                    aliens.append(new_alien)
+
 
                 # Randomly spawn health items.
                 if random.randint(1, HEALTHHAPPEND) <= 1:  # 5% chance to spawn health item.
@@ -163,6 +179,10 @@ class SpaceShooterGame:
                     if b['rect'].top > WINDOWHEIGHT:  # If comet is off screen.
                         comets.remove(b)              # Remove it from the list.
 
+                for alien in aliens[:]:
+                    if alien['rect'].top > WINDOWHEIGHT:
+                        aliens.remove(alien)
+                        
                 # Draw the game world on the window.
                 window_surface.blit(self.background_image, (0, 0))  # Draw background image at the top left.
 
@@ -188,9 +208,14 @@ class SpaceShooterGame:
 
                 explosion_bullets.move_bullets(bullets)  # Move the bullets.
                 score = explosion_bullets.check_bullet_hits(comets,self.comet_image, explosions, score, bullets)  # Check for bullet hits.
+                explosion_bullets.check_alien_hits(aliens,explosions, bullets)  # Check for bullet hits.
 
                 fire_animation.update()  # Update fire animation.
                 fire_animation.draw(window_surface, self.player_rect)  # Draw fire animation on player.
+
+                explosion_bullets.move_aliens(aliens, self.player_rect)
+                for alien in aliens:
+                    window_surface.blit(alien['surface'], alien['rect'])
 
                 # Manage explosions.
                 for explosion in explosions[:]:
@@ -215,9 +240,11 @@ class SpaceShooterGame:
                 for bullet in bullets:
                     pygame.draw.rect(window_surface, (255, 0, 0), bullet)  # Draw red bullets.
                 
+                
                 pygame.display.update()  # Update the display.
-
-                hit_comet = health_lives.playerHashit_comet(self.player_rect, comets)  # Check for collision with comets.
+                
+                hit_comet = health_lives.player_hit_comet(self.player_rect, comets)  # Check for collision with comets.
+                hit_alien = health_lives.player_hit_comet(self.player_rect, aliens)  # Check for collision with aliens.
 
                 if self.player_rect.topleft < (0, 0):  # Check if player is off screen.
                     break  # End the game loop.
@@ -226,6 +253,15 @@ class SpaceShooterGame:
                     lives -= 1  # Decrease lives.
                     explosion_bullets.trigger_explosion(explosions, hit_comet['rect'].center)  # Trigger explosion at collision point.
                     comets.remove(hit_comet)  # Remove the hit comet.
+                    if lives <= 0:  # If no lives left.
+                        self.player_rect.topleft = (-10000, -10000)  # Move player off-screen.
+                        if score > self.top_score:  # If the score beats the top score.
+                            self.top_score = score+1  # Update the top score.
+                
+                if hit_alien:  # If a collision has occurred.
+                    lives -= 1  # Decrease lives.
+                    explosion_bullets.trigger_explosion(explosions, hit_alien['rect'].center)  # Trigger explosion at collision point.
+                    aliens.remove(hit_alien)  # Remove the hit comet.
                     if lives <= 0:  # If no lives left.
                         self.player_rect.topleft = (-10000, -10000)  # Move player off-screen.
                         if score > self.top_score:  # If the score beats the top score.
