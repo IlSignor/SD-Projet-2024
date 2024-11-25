@@ -66,9 +66,9 @@ class SpaceShooterGame:
 
         window_surface.blit(self.background_image, (0, 0))  # Display background image at the top left.
 
-        SpaceShooterGame.game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image)                                                                             
+        SpaceShooterGame.game_loop(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image)                                                                             
  
-    def game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image):
+    def game_loop(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image):
             
         pygame.init()
         pygame.display.set_caption('Space Shooter')  # Set the window title
