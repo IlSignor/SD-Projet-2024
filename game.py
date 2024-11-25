@@ -8,28 +8,28 @@ from definitions import*
 class SpaceShooterGame:
     def __init__(self):
         # Initialize pygame and set up the window, fonts, and other necessary elements
-        pygame.init()
-
-        pygame.display.set_caption('Space Shooter')  # Set the window title
-
-        # Load images
+        
         self.character_images_selection = [pygame.image.load(f'playersselection/player{i}.png') for i in range(1, 7)]
         self.character_images = [pygame.image.load(f'players/player{i}.png') for i in range(1, 7)]
         self.character_image_right = pygame.image.load('players/playersleft.png')
         self.character_image_left = pygame.image.load('players/playersright.png')
+        
         self.comet_image = pygame.image.load('comet.png')
         self.health_item_image = pygame.transform.scale(pygame.image.load('live.png'), (25, 25))
         self.background_image = pygame.transform.scale(pygame.image.load('background.jpg').convert(), (WINDOWWIDTH, WINDOWHEIGHT))
         self.background_start = pygame.transform.scale(pygame.image.load('background_start.jpg').convert(), (WINDOWWIDTH, WINDOWHEIGHT))
+        
         self.top_score = 0
+        
         self.player_image_right = pygame.transform.scale(self.character_image_right, (60, 120))  # Set player image based on selection.
         self.player_image_left = pygame.transform.scale(self.character_image_left, (60, 120))  # Set player image based on selection.
-        
         self.player_rect = pygame.transform.scale(self.character_images_selection[0], (80, 120)).get_rect()
 
 
     def start(self):  # This is now a method inside the class
+        
         # Show the "Start" screen.
+        
         window_surface.blit(self.background_image, (0, 0))  # Display background image at the top left.
         pygame.display.update()  # Update the display.
 
@@ -70,12 +70,9 @@ class SpaceShooterGame:
  
     def game(self, HEALTHHAPPEND, ADDNEWCOMETRATE, COMETMINSPEED, COMETMAXSPEED, ALIENHAPPEND, player_image):
             
-        health_lives = HealthLives()
-        explosion_bullets = ExplosionBullets()
-
+        pygame.init()
+        pygame.display.set_caption('Space Shooter')  # Set the window title
         
-        pygame.mixer.music.load('sounds/background.mp3')      # Load background music.
-
         while True:                            # Main game loop
             # Initialize game variables.
             PLAYERMOVERATE = 5 
@@ -89,6 +86,10 @@ class SpaceShooterGame:
             heal_animation = None              # Healing animation.
             rotation = "None"                  # The player doesn't rotate
             fire_animation = FireAnimation()   # Create fire animation object.
+            health_lives = HealthLives()
+            explosion_bullets = ExplosionBullets()
+
+            pygame.mixer.music.load('sounds/background.mp3')      # Load background music.
 
             # Set player position at the bottom center of the window.
             self.player_rect.topleft = (WINDOWWIDTH / 2, WINDOWHEIGHT - 150)
