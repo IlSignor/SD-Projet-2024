@@ -33,7 +33,7 @@ class FireAnimation:
             self.index = 0                                                             # Loop back to the first frame for continuous animation
 
     def draw(self, surface, player_rect):
-        self.rect.center = (player_rect.centerx, player_rect.bottom + 5)              # Position the fire animation below the player
+        self.rect.center = (player_rect.centerx, player_rect.bottom + 5)               # Position the fire animation below the player
         surface.blit(self.frames[self.index], self.rect)                               # Draw the current frame on the given surface
   
   
