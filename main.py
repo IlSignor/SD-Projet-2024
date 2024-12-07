@@ -1,3 +1,5 @@
+#################################       This file defines the starting point of the game and launch it when executed         #############################################
+
 #importations of the modulus and files
 import pygame, sys
 from pygame.locals import *

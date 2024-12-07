@@ -1,3 +1,5 @@
+#################################       This file defines the classes and constants used to the main mechanics of the game         #############################################
+
 #importations of the modulus and files
 import pygame, sys, random
 from pygame.locals import *

@@ -1,3 +1,5 @@
+#################################       This file defines the main class that runs the game         #############################################
+
 #importations of the modulus and files
 import pygame, random
 from pygame.locals import *

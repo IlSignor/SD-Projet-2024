@@ -1,3 +1,5 @@
+#################################       This file defines the classes used to do anmiations in the game         #############################################
+
 #importations of the modulus
 import pygame
 from pygame.locals import *
